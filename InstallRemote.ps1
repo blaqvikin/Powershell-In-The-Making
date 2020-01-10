@@ -26,8 +26,7 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
     Write-Host "Installing Netsurit's Ncentral remote software on $Computer"
 
     Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetupx86.exe" -ArgumentList "/q" -Wait} 
-    Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetupx64.exe" -ArgumentList "/q" -Wait} 
-
+    
 ########## Cleanup all the resources ##########
 
     Write-Host "Removing Temporary files on $Computer"
