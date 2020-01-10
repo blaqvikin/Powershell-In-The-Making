@@ -1,6 +1,6 @@
 ########## Get the exe download off the site, in this case an IIS site off an azure server, this could be the clients website or an organizations repo for client nms exe's ##########
 
-wget http://serverIP/filename
+##wget http://serverIP/filename##
 
 ########## Enable PS security prerequisites ##########
 
@@ -32,8 +32,8 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
 ######### Create admin accounts for NMS #######
 
-$password=N3t5ur!tis5tr0nG
-New-LocalUser -Name "localadmin01" -Password $password -AccountNeverExpires -Description "Organization's local admin account for remote support" 
+$secureString = convertto-securestring "N3t5ur!tis5tr0nG" -asplaintext -force
+New-LocalUser -Name "localadmin01" -Password $secureString -AccountNeverExpires -Description "Organization's local admin acmin" 
 Add-LocalGroupMember -Group "administrators" -Member "localadmin01" 
     
 ########## Cleanup all the resources ##########
@@ -43,3 +43,6 @@ Add-LocalGroupMember -Group "administrators" -Member "localadmin01"
     Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
     Remove-Item $RemovalPath -Force -Recurse
     Disable-PSRemoting
+
+
+    
