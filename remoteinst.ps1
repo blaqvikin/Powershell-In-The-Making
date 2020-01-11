@@ -2,47 +2,79 @@
 
 ##wget http://serverIP/filename##
 
-########## Enable PS security prerequisites ##########
-
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
-
-Set-Service -Name WinRM -StartupType Automatic | Restart-Service
-
-Enable-PSRemoting -Force -SkipNetworkProfileCheck
-
-
 ########## Declare the hostname ##########
 
 $Computer=$env:ComputerName
 
-########## Define the windows path to the downloaded file ##########
 
-$execFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+########## Enable PS security prerequisites ##########
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+
+    Set-Service -Name WinRM -StartupType Automatic | Restart-Service
+
+        Enable-PSRemoting -Force -SkipNetworkProfileCheck
+
+########## Declare error handlers ##########
+
+Clear-Host
+$ErrorActionPreference = 'Stop'
+    $VerbosePreference = 'Continue'
+
+########## Declare the search values below ##########
+
+        $localadmin = "localadmin20"
+            $ObjLocalUser = $null 
+
+Try {
+    Write-Verbose "Searching for $($localadmin) in LocalUser DataBase"
+        $ObjLocalUser = Get-LocalUser $localadmin
+            Write-Verbose "User $($localadmin) was found"
+}
+
+    Catch [Microsoft.PowerShell.Commands.UserNotFoundException] {
+        "User $($localadmin) was not found" | Write-Warning
+}
+
+        Catch {
+            "An unspecifed error occured" | Write-Error
+                Exit # Stop Powershell! 
+}
+
+                    #Create the user if it was not found
+                        If (!$ObjLocalUser) {
+                            Write-Verbose "Creating User $($localadmin)" #(Example)
+                                $secureString = convertto-securestring "N3t5ur!tis5tr0nG" -asplaintext -force
+                                    $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
+                                        Add-LocalGroupMember -Group "administrators" -Member $localadmin }
+ 
+         
+
+########## Define the windows path to the downloaded/ downloads file/ folder ##########
+
+$DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+
 
 ########## Install Software On PC ##########
 
 New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
-    Copy-Item "$execFolder\1510WindowsAgentSetup*.exe" "\\$Computer\c$\temp\1510WindowsAgentSetup" -Recurse
+    Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "\\$Computer\c$\temp\1510WindowsAgentSetup" -Recurse
 
-    Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
+        Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
 
 
     Invoke-CommandAs -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetupx86.exe" -ArgumentList "/q" -Wait} 
 
-######### Create admin accounts for NMS #######
 
-$secureString = convertto-securestring "N3t5ur!tis5tr0nG" -asplaintext -force
-New-LocalUser -Name "localadmin01" -Password $secureString -AccountNeverExpires -Description "Organization's local admin acmin" 
-Add-LocalGroupMember -Group "administrators" -Member "localadmin01" 
     
 ########## Cleanup all the resources ##########
 
     Write-Host "Removing Temporary files on $Computer"
-    $RemovalPath = "\\$Computer\c$\temp\1510WindowsAgentSetup"
-    Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
+        $RemovalPath = "\\$Computer\c$\temp\1510WindowsAgentSetup"
+             Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
     Remove-Item $RemovalPath -Force -Recurse
-    Disable-PSRemoting
+        Disable-PSRemoting
 
 
     
