@@ -9,14 +9,15 @@ $Computer=$env:ComputerName
 
 ########## Enable PS security prerequisites ##########
 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
-        Enable-PSRemoting -Force -SkipNetworkProfileCheck
-        
-                Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$Computer" -Force 
+        Enable-PSRemoting -Force
 
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$Computer" -Force 
+
+                
 ########## Declare error handlers ##########
 
 Clear-Host
@@ -50,7 +51,7 @@ Try {
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
-         
+ #Enter-PSSession -ComputerName $Computer -Credential "$Computer\$localacc" -Authentication Negotiate        
 
 ########## Define the windows path to the downloaded/ downloads file/ folder ##########
 
@@ -64,9 +65,8 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
     Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "\\$Computer\c$\temp\1510WindowsAgentSetup" -Recurse
 
         Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
-
-
-    Invoke-CommandAs -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetupx86.exe" -ArgumentList "/q" -Wait} 
+        
+            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetupx86.exe" -ArgumentList "/q" -Wait} 
 
 
     
@@ -77,6 +77,4 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
              Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
     Remove-Item $RemovalPath -Force -Recurse
         Disable-PSRemoting
-
-
-    
+            Exit-PSSession
