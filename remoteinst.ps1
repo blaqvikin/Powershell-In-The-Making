@@ -14,6 +14,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
         Enable-PSRemoting -Force -SkipNetworkProfileCheck
+        
+                Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$Computer" -Force 
 
 ########## Declare error handlers ##########
 
