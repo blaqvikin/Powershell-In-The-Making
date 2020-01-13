@@ -44,18 +44,24 @@ Try {
 
                     #Create the user if it was not found
                         If (!$ObjLocalUser) {
-                            Write-Verbose "Creating User $($localadmin)" #(Example)
+                             Write-Verbose "Creating User $($localadmin)" 
                                 $secureString = convertto-securestring "N3t5ur!tis5tr0nG" -asplaintext -force
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
- #Enter-PSSession -ComputerName $Computer -Credential "$Computer\$localacc" -Authentication Negotiate        
-
+ 
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
 
 wget http://102.37.11.36/1510WindowsAgentSetup.exe -O $DownloadsFolder
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+
+
+########## Disable Smart-screen filter as this hinders the WinAgentInstall
+
+        set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\' -Name SmartScreenEnabled -Value "0"
+
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "0"
 
 
 ########## Install Software On PC
@@ -73,8 +79,11 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 ########## Cleanup all the resources.
 
     Write-Host "Removing Temporary files on $Computer"
+        
         $RemovalPath = "\\$Computer\c$\temp\1510WindowsAgentSetup"
+
              Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
+    
     Remove-Item $RemovalPath -Force -Recurse
 
         Disable-PSRemoting
