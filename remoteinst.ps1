@@ -72,7 +72,7 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
         Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
         
-            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process "c:\temp\1510WindowsAgentSetup\1510WindowsAgentSetup" -ArgumentList "/q" -Wait} 
+            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $DownloadsFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} 
 
 
     
@@ -88,10 +88,10 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
         Disable-PSRemoting
 
-            Get-Service -Name WinRM | Stop-Service
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
 
-                Write-Host "Service stopped on + $Computer"
-
-                       Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
+                Get-Service -Name WinRM | Stop-Service
+                            
+               Write-Host "Service stopped on + $Computer"                    
             
             Exit-PSSession
