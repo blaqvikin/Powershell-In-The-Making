@@ -1,13 +1,11 @@
-########## Get the exe download off the site, in this case an IIS site off an azure server, this could be the clients website or an organizations repo for client nms exe's ##########
+########## Script to rollout software installation on remote computers.
 
-##wget http://serverIP/filename##
-
-########## Declare the hostname ##########
+########## Declare the hostname variable.
 
 $Computer=$env:ComputerName
 
 
-########## Enable PS security prerequisites ##########
+########## Enable PS security prerequisites.
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
@@ -18,13 +16,13 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$Computer" -Force 
 
                 
-########## Declare error handlers ##########
+########## Declare error handlers.
 
 Clear-Host
 $ErrorActionPreference = 'Stop'
     $VerbosePreference = 'Continue'
 
-########## Declare the search values below ##########
+########## Declare the search values below.
 
         $localadmin = "localadmin20"
             $ObjLocalUser = $null 
@@ -53,12 +51,14 @@ Try {
  
  #Enter-PSSession -ComputerName $Computer -Credential "$Computer\$localacc" -Authentication Negotiate        
 
-########## Define the windows path to the downloaded/ downloads file/ folder ##########
+########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
+
+wget http://102.37.11.36/1510WindowsAgentSetup.exe -O $DownloadsFolder
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
 
-########## Install Software On PC ##########
+########## Install Software On PC
 
 New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
@@ -70,7 +70,7 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
 
     
-########## Cleanup all the resources ##########
+########## Cleanup all the resources.
 
     Write-Host "Removing Temporary files on $Computer"
         $RemovalPath = "\\$Computer\c$\temp\1510WindowsAgentSetup"
