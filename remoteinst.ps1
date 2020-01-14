@@ -22,7 +22,7 @@ $ErrorActionPreference = 'Stop'
 
 ########## Declare the search values below.
 
-        $localadmin = "nservice"
+        $localadmin = "EnterUserName"
             $ObjLocalUser = $null 
 
 Try {
@@ -43,14 +43,14 @@ Try {
                     #Create the user if it was not found
                         If (!$ObjLocalUser) {
                              Write-Verbose "Creating User $($localadmin)" 
-                                $secureString = convertto-securestring "Vd*Jp7.xT@P>" -asplaintext -force
+                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
  
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
 
-wget http://102.133.237.18/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+wget http://EnterServerIP/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
@@ -83,14 +83,14 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
              Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
     
     Remove-Item $RemovalPath -Force -Recurse
-
-        Disable-PSRemoting
-
-            Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
+        
+        Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
 
                 Get-Service -Name WinRM | Stop-Service
-                            
-               Write-Host "Service stopped on + $Computer"
+        
+                    Disable-PSRemoting
+        
+                        Write-Host "Service stopped on + $Computer"
                
                     set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\' -Name SmartScreenEnabled -Value "1"
 
