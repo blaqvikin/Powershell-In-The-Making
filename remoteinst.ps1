@@ -1,10 +1,5 @@
 ########## Script to rollout software installation on remote computers.
 
-########## Declare the hostname variable.
-
-$Computer=$env:ComputerName
-
-
 ########## Enable PS security prerequisites.
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
@@ -14,7 +9,10 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
         Enable-PSRemoting -Force
 
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$Computer" -Force 
+            
+########## Declare the hostname variable.
 
+$Computer=$env:ComputerName
                 
 ########## Declare error handlers.
 
@@ -24,7 +22,7 @@ $ErrorActionPreference = 'Stop'
 
 ########## Declare the search values below.
 
-        $localadmin = "localadmin20"
+        $localadmin = "nservice"
             $ObjLocalUser = $null 
 
 Try {
@@ -45,7 +43,7 @@ Try {
                     #Create the user if it was not found
                         If (!$ObjLocalUser) {
                              Write-Verbose "Creating User $($localadmin)" 
-                                $secureString = convertto-securestring "N3t5ur!tis5tr0nG" -asplaintext -force
+                                $secureString = convertto-securestring "Vd*Jp7.xT@P>" -asplaintext -force
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
@@ -92,6 +90,10 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
                 Get-Service -Name WinRM | Stop-Service
                             
-               Write-Host "Service stopped on + $Computer"                    
+               Write-Host "Service stopped on + $Computer"
+               
+                    set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\' -Name SmartScreenEnabled -Value "1"
+
+            Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "1"
             
             Exit-PSSession
