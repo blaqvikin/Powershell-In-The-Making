@@ -22,7 +22,7 @@ $ErrorActionPreference = 'Stop'
 
 ########## Declare the search values below.
 
-        $localadmin = "EnterUserName"
+        $localadmin = "nservice"
             $ObjLocalUser = $null 
 
 Try {
@@ -43,14 +43,14 @@ Try {
                     #Create the user if it was not found
                         If (!$ObjLocalUser) {
                              Write-Verbose "Creating User $($localadmin)" 
-                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
+                                $secureString = convertto-securestring "Vd*Jp7.xT@P>" -asplaintext -force
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
  
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
 
-wget http://EnterServerIP/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+wget http://102.133.239.132/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
