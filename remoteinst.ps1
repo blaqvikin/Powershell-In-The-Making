@@ -50,7 +50,7 @@ Try {
  
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
 
-wget http://102.133.239.132/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+wget http://102.37.12.148/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
