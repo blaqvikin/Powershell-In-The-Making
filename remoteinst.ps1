@@ -1,17 +1,14 @@
 ########## Script to rollout software installation on remote computers.
 
-########## Enable PS security prerequisites.
+########## Enable PS security prerequisites. Change connection profile to "Private/ Domain" as WSMan will fail.
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
+            $conProfile = Get-NetConnectionProfile -InterfaceAlias ethernet
 
-########## Change connection profile to "Private/ Domain" as WSMan will fail.
+                $conProfile.NetworkCategory = Private
 
-$conProfile = Get-NetConnectionProfile -InterfaceAlias ethernet
-
-    $conProfile.NetworkCategory = Private
-
-            Set-NetConnectionProfile -InputObject $conProfile
+                    Set-NetConnectionProfile -InputObject $conProfile
 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
@@ -28,8 +25,8 @@ $Computer=$env:ComputerName
 ########## Declare error handlers.
 
 Clear-Host
-$ErrorActionPreference = 'Stop'
-    $VerbosePreference = 'Continue'
+    $ErrorActionPreference = 'Stop'
+        $VerbosePreference = 'Continue'
 
 ########## Declare the search values below.
 
