@@ -30,7 +30,7 @@ Clear-Host
 
 ########## Declare the search values below.
 
-        $localadmin = "EnterAccount"
+        $localadmin = "nservice"
             $ObjLocalUser = $null 
 
 Try {
@@ -58,7 +58,7 @@ Try {
  
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
 
-wget http://EnterServerIp/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+wget http://102.37.14.239/1510WindowsAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
