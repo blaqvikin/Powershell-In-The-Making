@@ -57,14 +57,16 @@ Try {
  
  
 ########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
+
 #####Boot install
-wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+            wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
-#####Nali install
-#wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+                        #####Nali install
+                                    #wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
-$DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
+            $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+                        $tempFolder= $env:TEMP
 
 ########## Disable Smart-screen filter as this hinders the WinAgentInstall
 
@@ -81,7 +83,7 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
         Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
         
-            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $DownloadsFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} 
+            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} 
 
 
     
@@ -89,11 +91,11 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
 
     Write-Host "Removing Temporary files on $Computer"
         
-        $RemovalPath = "\\$Computer\c$\temp\1510WindowsAgentSetup"
+        $RemovalFile = "$tempFolder\1510WindowsAgentSetup.exe"
 
-             Get-ChildItem  -Path $RemovalPath -Recurse  | Remove-Item -Force -Recurse
+             Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
     
-    Remove-Item $RemovalPath -Force -Recurse
+    Remove-Item $RemovalFile -Force -Recurse
         
         Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
 
