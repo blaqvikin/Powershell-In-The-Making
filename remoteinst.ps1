@@ -77,9 +77,7 @@ Try {
 
 ########## Install Software On PC
 
-New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
-
-    Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "\\$Computer\c$\temp\1510WindowsAgentSetup" -Recurse
+Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510WindowsAgentSetup" -Recurse
 
         Write-Host "Installing the Organizations's Ncentral remote software on $Computer"
         
