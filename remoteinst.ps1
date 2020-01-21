@@ -105,3 +105,5 @@ New-Item -ItemType directory -Path "\\$Computer\c$\temp\1510WindowsAgentSetup"
             Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "1"
             
             Exit-PSHostProcess
+            
+            SxN6ayfuNlCM2nL5Cef4vcGsiAXcamoMGcmfaAEtWaWb7Pg68qnzw4PBNC0i
