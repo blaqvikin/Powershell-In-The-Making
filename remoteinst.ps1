@@ -4,7 +4,7 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-            $conProfile = Get-NetConnectionProfile -InterfaceAlias ethernet
+            $conProfile = Get-NetConnectionProfile -InterfaceAlias Ethernet
 
                 $conProfile.NetworkCategory = "Private"
 
