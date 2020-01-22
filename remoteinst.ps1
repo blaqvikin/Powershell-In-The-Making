@@ -4,11 +4,10 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-            $conProfile = Get-NetConnectionProfile -InterfaceAlias Ethernet
+            $conProfile.NetworkCategory = "Private"
 
-                $conProfile.NetworkCategory = "Private"
-
-                    Set-NetConnectionProfile -InputObject $conProfile
+                        $conProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet" | Set-NetConnectionProfile -InputObject $conProfile
+                 
 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
