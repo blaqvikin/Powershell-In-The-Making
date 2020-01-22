@@ -89,7 +89,7 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
 
     Write-Host "Removing Temporary files on $Computer"
         
-        $RemovalFile = "$tempFolder\1510WindowsAgentSetup.exe"
+        $RemovalFile = "$tempFolder\1510WindowsAgentSetup"
 
              Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
     
