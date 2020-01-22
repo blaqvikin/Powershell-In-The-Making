@@ -6,7 +6,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
             $conProfile.NetworkCategory = "Private"
 
-                        $conProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet" | Set-NetConnectionProfile -InputObject $conProfile
+                        Get-NetConnectionProfile -InterfaceAlias "Ethernet" | Set-NetConnectionProfile -InputObject $conProfile
                  
 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
@@ -74,6 +74,12 @@ Try {
             Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "0"
 
 
+########## Uninstall current AV
+    
+           $RemoveApp=Get-WmiObject -Class "win32_product" | Where-Object{$_.name -eq "NameOfApp"}
+               $RemoveApp.uninstall()
+        
+
 ########## Install Software On PC
 
 Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510WindowsAgentSetup" -Recurse
@@ -108,4 +114,3 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
             
             Exit-PSHostProcess
             
-         
