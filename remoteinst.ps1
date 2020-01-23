@@ -4,9 +4,13 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-            $conProfile.NetworkCategory = "Private"
-
-                        Get-NetConnectionProfile -InterfaceAlias "Ethernet" | Set-NetConnectionProfile -InputObject $conProfile
+          #  $WIFIconProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet"
+            
+           #     Set-NetConnectionProfile -Name $WIFIconProfile -NetworkCategory Private
+                 
+                # $LANconProfile = Get-NetConnectionProfile -InterfaceAlias "Wi-Fi"       
+                    
+                 #   Set-NetConnectionProfile -Name $LANconProfile -NetworkCategory Private            
                  
 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
@@ -74,10 +78,10 @@ Try {
             Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "0"
 
 
-########## Uninstall current AV
+########## Uninstall current AV, yet to code an if statement
     
-           $RemoveApp=Get-WmiObject -Class "win32_product" | Where-Object{$_.name -eq "NameOfApp"}
-               $RemoveApp.uninstall()
+          # $RemoveApp=Get-WmiObject -Class "win32_product" | Where-Object{$_.name -eq "NameOfApp"}
+           #    $RemoveApp.uninstall()
         
 
 ########## Install Software On PC
@@ -97,9 +101,7 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
         $RemovalFile = "$tempFolder\1510WindowsAgentSetup"
 
              Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
-    
-    Remove-Item $RemovalFile -Force -Recurse
-        
+           
         Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
 
                 Get-Service -Name WinRM | Stop-Service
