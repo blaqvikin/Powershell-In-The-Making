@@ -4,9 +4,9 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-          #  $WIFIconProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet"
+            $WIFIconProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet"
             
-           #     Set-NetConnectionProfile -Name $WIFIconProfile -NetworkCategory Private
+               Set-NetConnectionProfile -Name $WIFIconProfile -NetworkCategory Private
                  
                 # $LANconProfile = Get-NetConnectionProfile -InterfaceAlias "Wi-Fi"       
                     
