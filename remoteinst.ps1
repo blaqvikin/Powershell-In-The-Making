@@ -1,19 +1,11 @@
 ########## Script to rollout software installation on remote computers.
 
-
 ########## Enable PS security prerequisites. Change connection profile to "Private/ Domain" for WSMan requirements.
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-            $WIFIconProfile = Get-NetConnectionProfile -InterfaceAlias "Wi-Fi"
-            
-                Set-NetConnectionProfile -Name $WIFIconProfile -NetworkCategory Private
+            $CurrentConProfile = get-netconnectionprofile;Set-NetConnectionProfile -Name $CurrentConProfile.Name -NetworkCategory Private           
                  
-                    $LANconProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet"       
-                    
-                        Set-NetConnectionProfile -Name $LANconProfile -NetworkCategory Private            
-                 
-
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
             Enable-PSRemoting -Force
@@ -34,7 +26,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ########## Declare the search values below.
 
-                                    $localadmin = "Mawanda_adminm"
+                                    $localadmin = "EnterAdminUsername"
                                         $ObjLocalUser = $null 
 
 Try {
@@ -68,16 +60,16 @@ Try {
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                         
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
+                                        
+########## Get the download file from a repo.
  
- 
-########## Define the windows path to the downloaded/ downloads file/ folder. Next download and place the temp file to the desired folder below.
-
 #####Boot install
             #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
                         #####Nali install
                                     wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
-
+                                    
+########## Define the windows path to the downloaded/ downloads file/ folder.
 
             $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
                         
@@ -107,7 +99,7 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
                 $ObjLocalApp = $null 
 
 Try {
-    Write-Verbose "Searching for $($appToRemove) in installed apps"
+    Write-Verbose "Searching for ($appToRemove) in installed apps"
             $ObjLocalApp = Get-WmiObject -Class "win32_product" | Where-Object{$_.name -eq $appToRemove}
                 
 }
@@ -127,12 +119,12 @@ Try {
     
 ########## Cleanup all the resources.
 
-    Write-Host "Removing Temporary files on $Computer"
+    Write-Host "Cleanup process on $Computer"
         
         $RemovalFile = "$tempFolder\1510WindowsAgentSetup"
 
              Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
-
+             
                     set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\' -Name SmartScreenEnabled -Value "1"
 
              Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "1"
