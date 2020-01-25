@@ -4,17 +4,7 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-<<<<<<< HEAD
-            $WIFIconProfile = Get-NetConnectionProfile -InterfaceAlias "Ethernet"
-            
-               Set-NetConnectionProfile -Name $WIFIconProfile -NetworkCategory Private
-                 
-                # $LANconProfile = Get-NetConnectionProfile -InterfaceAlias "Wi-Fi"       
-                    
-                 #   Set-NetConnectionProfile -Name $LANconProfile -NetworkCategory Private            
-=======
             $CurrentConProfile = get-netconnectionprofile;Set-NetConnectionProfile -Name $CurrentConProfile.Name -NetworkCategory Private           
->>>>>>> 7784a6c5087a931ec3a060d4e2142247c6d57bf8
                  
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
@@ -36,13 +26,8 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ########## Declare the search values below.
 
-<<<<<<< HEAD
-        $localadmin = "EnterUsername"
-            $ObjLocalUser = $null 
-=======
                                     $localadmin = "EnterAdminUsername"
                                         $ObjLocalUser = $null 
->>>>>>> 7784a6c5087a931ec3a060d4e2142247c6d57bf8
 
 Try {
     Write-Verbose "Searching for ($localadmin) in local account database"
@@ -67,16 +52,11 @@ Try {
               #Create the user if it was not found
         
                         If (!$ObjLocalUser) {
-<<<<<<< HEAD
-                             Write-Verbose "Creating User $($localadmin)" 
-                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
-=======
 
                              Write-Verbose "Creating local user ($localadmin) on ($Computer)" 
                         
                                 $secureString = convertto-securestring "EnterPassword" -asplaintext -force
                         
->>>>>>> 7784a6c5087a931ec3a060d4e2142247c6d57bf8
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                         
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
