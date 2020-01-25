@@ -33,7 +33,7 @@ Clear-Host
 
 ########## Declare the search values below.
 
-        $localadmin = "nservice"
+        $localadmin = "EnterUsername"
             $ObjLocalUser = $null 
 
 Try {
@@ -54,7 +54,7 @@ Try {
                     #Create the user if it was not found
                         If (!$ObjLocalUser) {
                              Write-Verbose "Creating User $($localadmin)" 
-                                $secureString = convertto-securestring "Vd*Jp7.xT@P>" -asplaintext -force
+                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
  
