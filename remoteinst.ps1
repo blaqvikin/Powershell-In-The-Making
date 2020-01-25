@@ -24,7 +24,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
                         $ErrorActionPreference = 'Stop'
                             $VerbosePreference = 'Continue'
 
-########## Declare the search values below.
+########## Declare the search values below. For the if statement
 
                                     $localadmin = "EnterAdminUsername"
                                         $ObjLocalUser = $null 
