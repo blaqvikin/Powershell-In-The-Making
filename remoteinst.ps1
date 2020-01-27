@@ -4,6 +4,8 @@
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
+Update-Help  -Force -Ea 0
+
             $CurrentConProfile = get-netconnectionprofile;Set-NetConnectionProfile -Name $CurrentConProfile.Name -NetworkCategory Private           
                  
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
