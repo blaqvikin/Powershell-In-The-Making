@@ -2,7 +2,7 @@
 
 ########## Enable PS security prerequisites. Change connection profile to "Private/ Domain" for WSMan requirements.
 
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -force
 
 Update-Help  -Force -Ea 0
 
@@ -139,5 +139,5 @@ Try {
         
                             Write-Host "Service stopped on + $Computer"
                
-                      Exit-PSHostProcess
+                      Exit-PSsession
             
