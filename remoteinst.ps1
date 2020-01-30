@@ -92,7 +92,7 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
 
         Write-Host "Installing the organizations's remote management software on $Computer"
         
-            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} 
+            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} -Credential $localadmin
 
 
 ########## Uninstall any desired app, in this case the current AV on the machine.
