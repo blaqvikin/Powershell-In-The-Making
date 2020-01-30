@@ -26,7 +26,7 @@ Update-Help  -Force -Ea 0
                         $ErrorActionPreference = 'Stop'
                             $VerbosePreference = 'Continue'
 
-########## Declare the search values below.
+########## Declare the search values below. For the if statement
 
                                     $localadmin = "EnterAdminUsername"
                                         $ObjLocalUser = $null 
