@@ -68,8 +68,11 @@ Try {
 #####Boot install
             #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
-                        #####Nali install
-                                    wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+                        #####Nali CPT install
+                                    #wget https://deployremoteapps.azurewebsites.net/1510NalibaliCPTAgent.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+                                    
+                                                #Nali JHB install
+                                                            wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\1557NalibaliJHBAgent.exe
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
 
