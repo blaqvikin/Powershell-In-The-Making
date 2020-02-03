@@ -2,8 +2,12 @@
 
 ########## Enable PS security prerequisites. Change connection profile to "Private/ Domain" for WSMan requirements.
 
+<<<<<<< HEAD
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
 
+=======
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -force
+>>>>>>> e3fb3827206a26f57e4224b5f70332b68d79db29
 
 Update-Help  -Force -Ea 0
 
@@ -31,7 +35,7 @@ Update-Help  -Force -Ea 0
                         $ErrorActionPreference = 'Stop'
                             $VerbosePreference = 'Continue'
 
-########## Declare the search values below.
+########## Declare the search values below. For the if statement
 
                                     $localadmin = "EnterAdminUsername"
                                         $ObjLocalUser = $null 
@@ -77,9 +81,17 @@ Try {
 #####Boot install
             #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
+<<<<<<< HEAD
                         #####Nali install
                                     wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
 
+=======
+                        #####Nali CPT install
+                                    #wget https://deployremoteapps.azurewebsites.net/1510NalibaliCPTAgent.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+                                    
+                                                #Nali JHB install
+                                                            wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\1557NalibaliJHBAgent.exe
+>>>>>>> e3fb3827206a26f57e4224b5f70332b68d79db29
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
 
@@ -104,9 +116,13 @@ Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510Windows
         
         Write-Host "Installing the organizations's remote management software on $Computer"
         
+<<<<<<< HEAD
         
             Invoke-Command -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait}
 
+=======
+            Invoke-Command -ComputerName $Computer -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait} -Credential $localadmin
+>>>>>>> e3fb3827206a26f57e4224b5f70332b68d79db29
 
 
 ########## Uninstall any desired app, in this case the current AV on the machine.
@@ -164,4 +180,10 @@ Try {
         
     
                             Write-Host "Service stopped on + $Computer"
+<<<<<<< HEAD
                         
+=======
+               
+                      Exit-PSsession
+            
+>>>>>>> e3fb3827206a26f57e4224b5f70332b68d79db29
