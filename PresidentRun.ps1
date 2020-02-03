@@ -2,15 +2,15 @@
 
 ########## Enable PS security prerequisites. Change connection profile to "Private/ Domain" for WSMan requirements.
 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 
 
 Update-Help  -Force -Ea 0
 
 
-             $CurrentConProfile = get-netconnectionprofile;Set-NetConnectionProfile -Name $CurrentConProfile.Name -NetworkCategory Private           
-                 
+            $CurrentConProfile = get-netconnectionprofile;Set-NetConnectionProfile -Name $CurrentConProfile.Name -NetworkCategory Private           
 
+                 
     Set-Service -Name WinRM -StartupType Automatic | Restart-Service
 
 
@@ -33,7 +33,7 @@ Update-Help  -Force -Ea 0
 
 ########## Declare the search values below.
 
-                                    $localadmin = "EnterAdminUsername"
+                                    $localadmin = "ph_admin"
                                         $ObjLocalUser = $null 
 
 Try {
@@ -60,30 +60,33 @@ Try {
         
                         If (!$ObjLocalUser) {
 
-                             
+        
                              Write-Verbose "Creating local user ($localadmin) on ($Computer)" 
                         
-                             
-                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
+        
+                                $secureString = convertto-securestring "3nterPassword!" -asplaintext -force
                         
-                             
+        
                                     $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
-                        
-                             
-                                        Add-LocalGroupMember -Group "administrators" -Member $localadmin }
+        
+                 
+                                          Add-LocalGroupMember -Group "administrators" -Member $localadmin }
+
+                                        
+                                                                                
                                         
 ########## Get the download file from a repo.
  
-#####Boot install
-            #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
-
-                        #####Nali install
-                                    wget https://deployremoteapps.azurewebsites.net/1510NalibaliAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
-
+                        #####President agent install
+        
+                                    wget https://deployremoteapps.azurewebsites.net/1016PresidentAgentSetup.exe -O $DownloadsFolder\7z1900-x64.exe
+                                    
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
 
+        
             $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+        
                         
                         $tempFolder= $env:TEMP
 
@@ -99,50 +102,39 @@ Try {
 
 ########## Install Software On PC
 
-Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510WindowsAgentSetup" -Recurse
+Copy-Item "$DownloadsFolder\1016PresidentAgentSetup.exe" "$tempFolder\1016PresidentAgentSetup.exe" -Recurse
 
         
         Write-Host "Installing the organizations's remote management software on $Computer"
         
         
-            Invoke-Command -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait}
+            Invoke-Command -ScriptBlock {Start-Process $tempFolder\1016PresidentAgentSetup.exe -ArgumentList "/q" -Wait} 
 
 
+########## Rename the machine, before execution increment the 001 number
+        
+        
+        Rename-Computer -ComputerName $Computer -NewName "PHCPTWS001"
 
-########## Uninstall any desired app, in this case the current AV on the machine.
 
-             $appToRemove= "EnterAppToRemove"
-                $ObjLocalApp = $null 
+                add-computer -domainname presidenthotel -Credential presidenthotel\Netsurit -force 
 
-Try {
-    
-    Write-Verbose "Searching for ($appToRemove) in installed apps"
-    
-            $ObjLocalApp = Get-WmiObject -Class "win32_product" | Where-Object{$_.name -eq $appToRemove}
-                
-}
 
-                Catch [Microsoft.PowerShell.Commands.ProgramNotFoundException] {
-                    "$($appToRemove) was not found" | Write-Warning 
-        }
-                Catch 
-                        {"An unspecifed error occured" | Write-Error
-                            Exit # Stop Powershell!
-                        }
+########## Enable BitLocker, change the secure string for each user
 
-                            if ($ObjLocalApp){
-    
-                                Write-Verbose "$($appToRemove) was found, uninstalling app wait!"
-    
-                                    $ObjLocalApp.uninstall()
-                                }
-    
+        
+        $SecureString = ConvertTo-SecureString "864200" -AsPlainText -Force
+
+           
+               Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes256 –UsedSpaceOnly -Pin $SecureString    -TPMandPinProtector
+
+  
 ########## Cleanup all the resources.
 
     Write-Host "Cleanup process on $Computer"
+
         
-    
-        $RemovalFile = "$tempFolder\1510WindowsAgentSetup"
+        $RemovalFile = "$tempFolder\1016PresidentAgentSetup.exe"
 
     
              Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
@@ -150,18 +142,27 @@ Try {
     
                     set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\' -Name SmartScreenEnabled -Value "1"
 
-    
+
              Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System\' -Name SmartScreenEnabled -Value "1"
            
-    
+
         Set-Item WSMan:\localhost\Client\TrustedHosts -Value " " -Force
 
-    
+           
                     Get-Service -Name WinRM | Stop-Service
         
-    
+           
                         Disable-PSRemoting
         
-    
+           
                             Write-Host "Service stopped on + $Computer"
-                        
+
+
+########## Restart the machine
+
+Write-Verbose "Restarting the machine"
+
+    restart-computer $Computer
+
+               
+                      
