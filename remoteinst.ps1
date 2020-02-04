@@ -75,10 +75,10 @@ Try {
 ########## Get the download file from a repo.
  
 #####Boot install
-            #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+            wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\WindowsAgentSetup.exe
 
                         #####Nali install (JHB)
-                                    wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\1510WindowsAgentSetup.exe
+                                    #wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\WindowsAgentSetup.exe
 
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
@@ -99,13 +99,13 @@ Try {
 
 ########## Install Software On PC
 
-Copy-Item "$DownloadsFolder\1510WindowsAgentSetup*.exe" "$tempFolder\1510WindowsAgentSetup" -Recurse
+Copy-Item "$DownloadsFolder\WindowsAgentSetup.exe" "$tempFolder\WindowsAgentSetup.exe" -Recurse
 
         
         Write-Host "Installing the organizations's remote management software on $Computer"
         
         
-            Invoke-Command -ScriptBlock {Start-Process $tempFolder\1510WindowsAgentSetup.exe -ArgumentList "/q" -Wait}
+            Invoke-Command -ScriptBlock {Start-Process $tempFolder\WindowsAgentSetup.exe -ArgumentList "/q" -Wait}
 
 
 
@@ -142,7 +142,7 @@ Try {
     Write-Host "Cleanup process on $Computer"
         
     
-        $RemovalFile = "$tempFolder\1510WindowsAgentSetup"
+        $RemovalFile = "$tempFolder\WindowsAgentSetup.exe"
 
     
              Get-ChildItem  -Path $RemovalFile -Recurse  | Remove-Item -Force -Recurse
