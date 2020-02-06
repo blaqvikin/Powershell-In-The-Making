@@ -79,7 +79,7 @@ Try {
  
                         #####President agent install
         
-                                    wget https://deployremoteapps.azurewebsites.net/1016PresidentAgentSetup.exe -O $DownloadsFolder\7z1900-x64.exe
+                                    wget https://deployremoteapps.azurewebsites.net/1016PresidentAgentSetup.exe -O $DownloadsFolder\1016PresidentAgentSetup.exe
                                     
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
