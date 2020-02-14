@@ -75,10 +75,10 @@ Try {
 ########## Get the download file from a repo.
  
 #####Boot install
-            wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\WindowsAgentSetup.exe
+            #wget https://deployremoteapps.azurewebsites.net/1531BootleggerAgentSetup.exe -O $DownloadsFolder\WindowsAgentSetup.exe
 
                         #####Nali install (JHB)
-                                    #wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\WindowsAgentSetup.exe
+                                    wget https://deployremoteapps.azurewebsites.net/1557NalibaliJHBAgent.exe -O $DownloadsFolder\WindowsAgentSetup.exe
 
                                     
 ########## Define the windows path to the downloaded/ downloads file/ folder.
