@@ -1,4 +1,4 @@
-# mypwsh
+# Powershell
 Powershell automation scripts.
 
 Install software on a host/ remote machine.
