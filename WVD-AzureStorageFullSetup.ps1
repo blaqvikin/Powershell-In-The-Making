@@ -32,10 +32,10 @@ Connect-AzAccount -Subscription $SubscriptionId #connect to your azure account.
 Select-AzSubscription -SubscriptionId $SubscriptionId 
 
 Join-AzStorageAccountForAuth
-        -ResourceGroupName $ResourceGroupName
-        -StorageAccountName $StorageAccountName
-        -DomainAccountType "ComputerAccount"
-        -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix"
+        -ResourceGroupName $ResourceGroupName,
+        -StorageAccountName $StorageAccountName,
+        -DomainAccountType "ComputerAccount",
+        -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix",
         -EncryptionType "AES256"
 
 #Download the FSLogix setup/ archive to the user downloads folder.
@@ -49,6 +49,10 @@ Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsSetup
     Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsRuleEditorSetup
 
         Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsJavaRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #FSLogixAppsJavaRuleEditorSetup
+
+#Domain Join the machine if not part of the domain.
+
+    add-computer -domainname YourDomainName -Credential YourDomainName\DomainAccount -force
 
 #New-Item 'HKLM:\SOFTWARE\FSLogix\Profiles'
 
