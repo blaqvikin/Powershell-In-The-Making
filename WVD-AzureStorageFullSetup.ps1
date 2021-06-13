@@ -1,15 +1,25 @@
-﻿<# Date: 22/12/2020
+<# Date: 22/12/2020
 Version: 0.0.5
 Author: Mawanda Hlophoyi
 Prerequisites: Powershell  (Az Module, AD module, ), Domain Join Workstation, Access to the internet, Local administration privileges .
 Assumptions: WVD domain groups created
 Title: This script prepares the WVD environment, joins the azure storage into onprem AD, setup the FSLogix profile, mount the file share and setup the necessary permissions.
+Note: This script has been tested with PS version 7.1.3, check your computers' PS version for compatibility before executing the script.
 #>
 
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable execution of PS scripts.
+
+#Domain Join the machine if not part of the domain.
+
+    add-computer -domainname YourDomainName -Credential YourDomainName\DomainAccount -force
 
 #Declare the downloads folder, this is default reg key for all Windows machines
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
+
+#Download Powershell version 7.1.3 
+wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose | Move-Item .\PowerShell-7.1.3-win-x64.msi -Destination C:\temp 
+
+    Invoke-Command -ScriptBlock {Start-Process "C:\temp\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
 
 #Download the AzFilesHybrid archive to the user downloads folder.
 
@@ -23,9 +33,9 @@ Set-Location -Path "C:\temp\" #Change location to the temp dir
 
 Import-Module -Name AzFilesHybrid #Import the downloaded module into PS
 
-$SubscriptionId = "MySubscription ID"
-$ResourceGroupName = "MyResourceGroup"
-$StorageAccountName = "MyStorageAccountName"
+$SubscriptionId = Read-Host -Prompt "Key in your subscription ID"
+$ResourceGroupName = Read-Host -Prompt "Key in your resource group name"
+$StorageAccountName = Read-Host -Prompt "Key in your storage account name"
 
 Connect-AzAccount -Subscription $SubscriptionId #connect to your azure account.
 
@@ -50,10 +60,6 @@ Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsSetup
 
         Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsJavaRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #FSLogixAppsJavaRuleEditorSetup
 
-#Domain Join the machine if not part of the domain.
-
-    add-computer -domainname YourDomainName -Credential YourDomainName\DomainAccount -force
-
 #New-Item 'HKLM:\SOFTWARE\FSLogix\Profiles'
 
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
@@ -72,20 +78,28 @@ Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone"
 
 #Add the WVD Onprem AD group to the FSLogix profile list groups.
 
-Add-LocalGroupMember -Member "TestScript" -Group "FSLogix Profile Include List"
+Add-LocalGroupMember -Member "WVD Users Group" -Group "FSLogix Profile Include List"
 
-    Add-LocalGroupMember -Member "testScript" -Group "FSLogix ODFC Include List"
+    Add-LocalGroupMember -Member "WVD Users Group" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
 
-CMD /c net use R: \\storageAccount.file.core.windows.net\fileShare theStorageAccountKey /user:Azure\storageAccount
+CMD /c net use W: \\storageAccount.file.core.windows.net\fileShare "xxx-xxx-xxx-xxxx" /user:Azure\storageAccount 
 
-#Update the NTFS permissions.
+#Update the NTFS permissions of the Azure FileShare.
 
-CMD /c icacls R: /remove "Authenticated Users"
-CMD /c icacls R: /remove "Builtin\Users"
-CMD /c icacls R: /grant "Creator Owner":(OI)(CI)(IO)(M)
-CMD /c icacls R: /grant "WVD Group":(F)
-CMD /c icacls R: /grant "WVD Admin Group":(F)
+icacls W: /remove "Authenticated Users"
+icacls W: /remove "Builtin\Users"
+
+Get-Acl -Path W: | Select-Object Owner
+
+icacls W: /grant ("ReplaceWithOutputFromAbove" + ':(OI)(CI)(IO)M')
+
+icacls W: /grant ("WVD Users Group" + ':(F)')
+icacls W: /grant ("WVD Admin Group" + ':(F)')
+
+#Remove Mounted storage, for security reasons it is not recommended to leave your storage account mounted using a key.
+
+net use W: /DELETE
 
 #Set-up is completed.
