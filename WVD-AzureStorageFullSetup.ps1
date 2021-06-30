@@ -115,6 +115,9 @@ New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $h
 #Search for Azure Virtual Desktop groups in your AD, copy the object ID
 Get-AzADGroup -SearchString "SearchPhrase" | Format-Table
 
+#Search for deployed application groups, copy the name to the role assignment
+Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname
+
 #Add Azure Active Directory user groups to the default desktop app group for the host pool:
 New-AzRoleAssignment -objectId "xxxx-zzzz-xxxx" -RoleDefinitionName "Desktop Virtualization User" -ResourceName $DesktopAppGroupName -ResourceGroupName $resourcegroupname -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
 
