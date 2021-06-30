@@ -107,7 +107,7 @@ net use W: /DELETE
 $hostpoolname = Read-Host -Prompt "Create a host pool name"
 $workspacename = Read-Host -Prompt "Create a workspace for your Azure Virtual Desktop app groups"
 
-New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location UK South -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop"
+New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location "UK South" -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop"
 
 #Token Registration
 New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
