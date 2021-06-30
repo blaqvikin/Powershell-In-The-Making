@@ -16,7 +16,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable exe
 #Declare the downloads folder, this is default reg key for all Windows machines
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
-#Download Powershell version 7.1.3 
+#Download Powershell version 7.1.3 (stable) as of writing this code, download only if running an older version
 wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose | Move-Item .\PowerShell-7.1.3-win-x64.msi -Destination C:\temp 
 
     Invoke-Command -ScriptBlock {Start-Process "C:\temp\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
@@ -31,7 +31,9 @@ Set-Location -Path "C:\temp\" #Change location to the temp dir
 
 .\CopyToPSPath.ps1 
 
-Import-Module -Name AzFilesHybrid #Import the downloaded module into PS
+Import-Module -Name AzFilesHybrid #Import the downloaded module into PS session
+
+Install-module Az #Az module is required for the connect-azaccount and select-azsubscription commands.
 
 $SubscriptionId = Read-Host -Prompt "Key in your subscription ID"
 $ResourceGroupName = Read-Host -Prompt "Key in your resource group name"
@@ -41,12 +43,7 @@ Connect-AzAccount -Subscription $SubscriptionId #connect to your azure account.
 
 Select-AzSubscription -SubscriptionId $SubscriptionId 
 
-Join-AzStorageAccountForAuth
-        -ResourceGroupName $ResourceGroupName,
-        -StorageAccountName $StorageAccountName,
-        -DomainAccountType "ComputerAccount",
-        -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix",
-        -EncryptionType "AES256"
+Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -DomainAccountType "ComputerAccount" -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix"
 
 #Download the FSLogix setup/ archive to the user downloads folder.
 
@@ -78,9 +75,9 @@ Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone"
 
 #Add the WVD Onprem AD group to the FSLogix profile list groups.
 
-Add-LocalGroupMember -Member "WVD Users Group" -Group "FSLogix Profile Include List"
+Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix Profile Include List"
 
-    Add-LocalGroupMember -Member "WVD Users Group" -Group "FSLogix ODFC Include List"
+    Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
 
@@ -95,10 +92,10 @@ Get-Acl -Path W: | Select-Object Owner
 
 icacls W: /grant ("ReplaceWithOutputFromAbove" + ':(OI)(CI)(IO)M')
 
-icacls W: /grant ("WVD Users Group" + ':(F)')
-icacls W: /grant ("WVD Admin Group" + ':(F)')
+icacls W: /grant ("WVDUsersGroup" + ':(F)')
+icacls W: /grant ("WVDAdminGroup" + ':(F)')
 
-#Remove Mounted storage, for security reasons it is not recommended to leave your storage account mounted using a key.
+#Remove Mounted storage, for security reasons, it is not recommended to leave your storage account mounted using a key.
 
 net use W: /DELETE
 
@@ -113,7 +110,7 @@ New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -Wor
 New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
 
 #Search for Azure Virtual Desktop groups in your AD, copy the object ID
-Get-AzADGroup -SearchString "SearchPhrase" | Format-Table
+Get-AzADGroup -SearchString "YourSearchPhrase" | Format-Table
 
 #Search for deployed application groups, copy the name to the role assignment - resourcename
 Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname
