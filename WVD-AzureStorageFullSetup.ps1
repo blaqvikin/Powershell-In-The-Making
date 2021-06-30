@@ -73,6 +73,9 @@ Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone"
 
     Remove-LocalGroupMember -Group "FSLogix ODFC Include List" -Member "Everyone", "Administrator", "Users"
 
+#Search AD for WVD group names
+Get-AzADGroup -SearchString "YourWVDsearchPhrase" | Format-Table
+
 #Add the WVD Onprem AD group to the FSLogix profile list groups.
 
 Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix Profile Include List"
@@ -104,22 +107,20 @@ net use W: /DELETE
 $hostpoolname = Read-Host -Prompt "Create a host pool name"
 $workspacename = Read-Host -Prompt "Create a workspace for your Azure Virtual Desktop app groups"
 
-New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location "UK South" -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop"
+New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location "UK South" -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop" #New host pool group with meta-data in UK South.
 
 #Token Registration
 New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+#Search for deployed application groups, copy the name to the role assignment - resourcename
+Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname | Select-Object | Format-List Name, Location
 
 #Search for Azure Virtual Desktop groups in your AD, copy the object ID
 Get-AzADGroup -SearchString "YourSearchPhrase" | Format-Table
 
-#Search for deployed application groups, copy the name to the role assignment - resourcename
-Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname
-
 #Add Azure Active Directory user groups to the default desktop app group for the host pool:
-New-AzRoleAssignment -objectId "xxxx-zzzz-xxxx" -RoleDefinitionName "Desktop Virtualization User" -ResourceName $DesktopAppGroupName -ResourceGroupName $resourcegroupname -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
+New-AzRoleAssignment -objectId "ReplaceWithObjectIDfromAbove" -RoleDefinitionName "Desktop Virtualization User" -ResourceName "ReplaceWithDesiredOutputAbove" -ResourceGroupName $resourcegroupname -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
 
 #Export registration key for use later.
-
 $token = Get-AzWvdRegistrationInfo -ResourceGroupName $resourcegroupname -HostPoolName $hostpoolname
 
 #For manual installation of the AVD hosts refer to https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-powershell#register-the-virtual-machines-to-the-azure-virtual-desktop-host-pool 
