@@ -1,5 +1,5 @@
-<# Date: 22/12/2020
-Version: 0.0.5
+<# Date: 30/06/2021
+Version: 0.0.7
 Author: Mawanda Hlophoyi
 Prerequisites: Powershell  (Az Module, AD module, ), Domain Join Workstation, Access to the internet, Local administration privileges .
 Assumptions: WVD domain groups created
@@ -102,7 +102,24 @@ icacls W: /grant ("WVD Admin Group" + ':(F)')
 
 net use W: /DELETE
 
-#Set-up is completed.
+#Setting up hostpool
 
+$hostpoolname = Read-Host -Prompt "Create a host pool name"
+$workspacename = Read-Host -Prompt "Create a workspace for your Azure Virtual Desktop app groups"
 
-#saved changes
+New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location UK South -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop"
+
+#Token Registration
+New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+
+#Search for Azure Virtual Desktop groups in your AD, copy the object ID
+Get-AzADGroup -SearchString "SearchPhrase" | Format-Table
+
+#Add Azure Active Directory user groups to the default desktop app group for the host pool:
+New-AzRoleAssignment -objectId "xxxx-zzzz-xxxx" -RoleDefinitionName "Desktop Virtualization User" -ResourceName $DesktopAppGroupName -ResourceGroupName $resourcegroupname -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
+
+#Export registration key for use later.
+
+$token = Get-AzWvdRegistrationInfo -ResourceGroupName $resourcegroupname -HostPoolName $hostpoolname
+
+#For manual installation of the AVD hosts refer to https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-powershell#register-the-virtual-machines-to-the-azure-virtual-desktop-host-pool 
