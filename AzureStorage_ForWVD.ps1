@@ -17,7 +17,9 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable exe
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
 #Download Powershell version 7.1.3 (stable) as of writing this code, download only if running an older version
-wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose | Move-Item .\PowerShell-7.1.3-win-x64.msi -Destination C:\temp 
+wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose 
+
+Move-Item $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Destination C:\temp
 
     Invoke-Command -ScriptBlock {Start-Process "C:\temp\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
 
