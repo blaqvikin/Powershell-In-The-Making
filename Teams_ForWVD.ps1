@@ -36,7 +36,7 @@ reg unload HKU\TempDefault
             reg add HKLM\SOFTWARE\Policies\Microsoft\office\16.0\common\officeupdate /v hideenabledisableupdates /t REG_DWORD /d 1 /f
 
 #Uninstall any existing OneDrive per-user installations 
-        $appToRemove= "Onedrive"
+        $appToRemove= "Microsoft OneDrive"
                 $ObjLocalApp = $null 
 
 Try {   
