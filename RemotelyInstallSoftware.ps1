@@ -67,7 +67,7 @@ Try {
                                 $secureString = convertto-securestring "EnterPassword" -asplaintext -force
                         
                              
-                                    $localacc = New-LocalUser -Name $localadmin -Password $secureString -AccountNeverExpires -Description "Organization's local admin" 
+                                    $localacc = New-LocalUser -Name "NewLocalUser" -Description "Local User Account" -FullName "NewLocalUser" -AccountNeverExpires -PasswordNeverExpires -Password $secureString 
                         
                              
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }
