@@ -7,29 +7,58 @@ Title: This script prepares the WVD environment, joins the azure storage into on
 Note: This script has been tested with PS version 7.1.3, check your computers' PS version for compatibility before executing the script.
 #>
 
+#Install Prerequisites
+
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable execution of PS scripts.
 
-#Domain Join the machine if not part of the domain.
+[System.Version]$global:PsVer = "0.0" # Default value
 
-    add-computer -domainname YourDomainName -Credential YourDomainName\DomainAccount -force
+#Validate PS version
+
+function ValidatePSVersion
+{
+    [System.Version]$minVer = "4.0"
+
+    Log-Info "Verifying the PowerShell version to run the script...”
+
+    if ($PSVersionTable.PSVersion)
+    {
+        $global:PsVer = $PSVersionTable.PSVersion
+    }
+    
+    If ($global:PsVer -lt $minVer)
+    {
+    Log-Error "PowerShell version $minVer, or higher is required. Current PowerShell version is $global:PsVer. Downloading Powershell v7.1.3" 
+        
+    wget -uri https://www.microsoft.com/en-us/download/confirmation.aspx?id=54616 -OutFile $DownloadsFolder\W2K12-KB3191565-x64.msu -Verbose
+    wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose 
+        
+    Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\W2K12-KB3191565-x64.msu" -ArgumentList "/q" -Wait} #Install WMF5
+    Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
+        #exit 1;
+    }
+    else
+    {
+        Log-Success "[OK]`n"
+    }
+}
+
+#Domain Join the machine if not part of the domain.
+    Set-Timezone "South Africa Standard Time" #Set Timezone to +2
+    
+    $DoaminName = Read-Host -Prompt "Enter your domain name"
+    
+    $DomainAdmin = Read-Host -Prompt "Enter your domain admin account"
+
+    add-computer -DomainName $DoaminName -Credential $DomainAdmin -force | Restart-Computer -ComputerName $env:COMPUTERNAME #Join the machine to the domain. 
 
 #Declare the downloads folder, this is default reg key for all Windows machines
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
-#Download Powershell version 7.1.3 (stable) as of writing this code, download only if running an older version
-wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose 
-
-Move-Item $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Destination C:\temp
-
-    Invoke-Command -ScriptBlock {Start-Process "C:\temp\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
-
 #Download the AzFilesHybrid archive to the user downloads folder.
-
 wget -uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.3/AzFilesHybrid.zip -OutFile $DownloadsFolder\AzFilesHybrid.zip
 
-Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip -DestinationPath "C:\temp\"
-
-Set-Location -Path "C:\temp\" #Change location to the temp dir
+Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip
 
 .\CopyToPSPath.ps1 
 
@@ -41,29 +70,30 @@ $SubscriptionId = Read-Host -Prompt "Key in your subscription ID"
 $ResourceGroupName = Read-Host -Prompt "Key in your resource group name"
 $StorageAccountName = Read-Host -Prompt "Key in your storage account name"
 
-Connect-AzAccount -Subscription $SubscriptionId #connect to your azure account.
+Connect-AzAccount -Subscription $SubscriptionId | Select-AzSubscription -SubscriptionId $SubscriptionId  #connect to your azure account.
 
-Select-AzSubscription -SubscriptionId $SubscriptionId 
-
-Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -DomainAccountType "ComputerAccount" -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix"
+Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
+ -StorageAccountName $StorageAccountName `
+ -DomainAccountType "ComputerAccount" `
+ -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix"
 
 #Download the FSLogix setup/ archive to the user downloads folder.
 
 wget -Uri "https://aka.ms/fslogix_download" -OutFile $DownloadsFolder\fslogix.zip
 
-    Expand-Archive -LiteralPath $DownloadsFolder\fslogix.zip -DestinationPath "C:\temp\"
+    Expand-Archive -LiteralPath $DownloadsFolder\fslogix.zip
 
-Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsSetup
+Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\x64\Release\FSLogixAppsSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsSetup
 
-    Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsRuleEditorSetup
+    Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\Release\FSLogixAppsRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsRuleEditorSetup
 
-        Invoke-Command -ScriptBlock {Start-Process "C:\temp\x64\Release\FSLogixAppsJavaRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #FSLogixAppsJavaRuleEditorSetup
+        Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\x64\Release\FSLogixAppsJavaRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #FSLogixAppsJavaRuleEditorSetup
 
 #New-Item 'HKLM:\SOFTWARE\FSLogix\Profiles'
 
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
 
-    New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "VHDLocations" -Value "FileStorageLocation" #set the  azure storage account location for the roaming profiles.
+    New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "VHDLocations" -Value "AzureFileStorageLocation" #set the  azure storage account location for the roaming profiles.
 
         New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "FlipFlopProfileDirectoryName" -Value "1" #append the username next to the SID
 
@@ -109,18 +139,35 @@ net use W: /DELETE
 $hostpoolname = Read-Host -Prompt "Create a host pool name"
 $workspacename = Read-Host -Prompt "Create a workspace for your Azure Virtual Desktop app groups"
 
-New-AzWvdApplicationGroup -ResourceGroupName ResourceGroupName `
-                            -Name DesktopGroup `
-                            -Location 'UKSouth' `
-                            -FriendlyName 'DesktopGroup' `
-                            -Description 'Desktop Group' `
-                            -HostPoolArmPath '/subscriptions/SubscriptionId/resourcegroups/ResourceGroupName/providers/Microsoft.DesktopVirtualization/hostPools/HostPoolName' `
-                            -ApplicationGroupType 'Desktop'
+#New Desktop Application Group
+New-AzWvdApplicationGroup -ResourceGroupName $ResourceGroupName `
+-Name 'DesktopGroup' `
+-Location 'UK South' `
+-FriendlyName 'DesktopGroup' `
+-Description 'Desktop Group' `
+-HostPoolArmPath '/subscriptions/SubscriptionId/resourcegroups/ResourceGroupName/providers/Microsoft.DesktopVirtualization/hostPools/HostPoolName' `
+-ApplicationGroupType 'Desktop'
 
-New-AzWvdHostPool -ResourceGroupName $ResourceGroupName -Name $hostpoolname -WorkspaceName $workspacename -HostPoolType Pooled -LoadBalancerType BreadthFirst -Location "UK South" -DesktopAppGroupName "DesktopGroup" -PreferredAppGroupType "Desktop" #New host pool group with meta-data in UK South.
+#New Workspace
+New-AzWvdWorkspace -ResourceGroupName $ResourceGroupName `
+-Name $workspacename `
+-Location 'UK South' `
+-FriendlyName 'WVD app group workspace' `
+-ApplicationGroupReference "/subscriptions/SubscriptionId/resourceGroups/ResourceGroupName/providers/Microsoft.DesktopVirtualization/applicationGroups/ApplicationGroupName1"
 
-#Token Registration
-New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+#New host pool group with meta-data in UK South.
+New-AzWvdHostPool -ResourceGroupName $ResourceGroupName `
+ -Name $hostpoolname `
+ -WorkspaceName $workspacename `
+ -HostPoolType Pooled `
+ -LoadBalancerType BreadthFirst `
+ -Location "UK South" `
+ -DesktopAppGroupName "DesktopGroup" `
+ -PreferredAppGroupType "Desktop"
+ -RegistrationTokenOperation 'Update' `
+ -ExpirationTime $((get-date).ToUniversalTime().AddDays(27).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
+ -MaxSessionLimit 10
+
 #Search for deployed application groups, copy the name to the role assignment - resourcename
 Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname | Select-Object | Format-List Name, Location
 
@@ -134,3 +181,8 @@ New-AzRoleAssignment -objectId "ReplaceWithObjectIDfromAbove" -RoleDefinitionNam
 $token = Get-AzWvdRegistrationInfo -ResourceGroupName $resourcegroupname -HostPoolName $hostpoolname
 
 #For manual installation of the AVD hosts refer to https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-powershell#register-the-virtual-machines-to-the-azure-virtual-desktop-host-pool 
+
+ #I'm keeping this for now
+
+<#Token Registration
+New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))#>
