@@ -1,12 +1,9 @@
 <# Date: 30/06/2021
-Version: 0.0.10
+Version: 0.0.7
 Author: Mawanda Hlophoyi
 Prerequisites: Powershell  (Az Module, AD module, ), Domain Join Workstation, Access to the internet, Local administration privileges .
 Assumptions: WVD domain groups created
-Title: This script prepares the WVD environment, 
-        Joins the azure storage to AD, 
-        Setup the FSLogix profile, mount the file share and setup the necessary permissions.
-        Deploy the Azure Virtual Desktop resources.
+Title: This script prepares the WVD environment, joins the azure storage into onprem AD, setup the FSLogix profile, mount the file share and setup the necessary permissions.
 Note: This script has been tested with PS version 7.1.3, check your computers' PS version for compatibility before executing the script.
 #>
 
@@ -14,12 +11,10 @@ Note: This script has been tested with PS version 7.1.3, check your computers' P
 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable execution of PS scripts.
 
-Install-module Az -force #Required module.
-Install-module ActiveDirectory -force #Required module.
-
 [System.Version]$global:PsVer = "0.0" # Default value
 
 #Validate PS version
+
 function ValidatePSVersion
 {
     [System.Version]$minVer = "4.0"
@@ -51,7 +46,7 @@ function ValidatePSVersion
 #Domain Join the machine if not part of the domain.
     Set-Timezone "South Africa Standard Time" #Set Timezone to +2
     
-    $DomainName = Read-Host -Prompt "Enter your domain name"
+    $DoaminName = Read-Host -Prompt "Enter your domain name"
     
     $DomainAdmin = Read-Host -Prompt "Enter your domain admin account"
 
@@ -63,27 +58,24 @@ $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\current
 #Download the AzFilesHybrid archive to the user downloads folder.
 wget -uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.3/AzFilesHybrid.zip -OutFile $DownloadsFolder\AzFilesHybrid.zip
 
-Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip 
-
-Set-location -LiteralPath ./AzFilesHybrid
+Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip | set-location -LiteralPath ./AzFilesHybrid
 
 .\CopyToPSPath.ps1 
 
 Import-Module -Name AzFilesHybrid #Import the downloaded module into PS session
 
+Install-module Az #Az module is required for the connect-azaccount and select-azsubscription commands.
+
 $SubscriptionId = Read-Host -Prompt "Key in your subscription ID"
 $ResourceGroupName = Read-Host -Prompt "Key in your resource group name"
 $StorageAccountName = Read-Host -Prompt "Key in your storage account name"
-Connect-AzAccount -Subscription $SubscriptionId #connect to your azure account.
 
-Set-AzContext
-
-Get-ADOrganizationalUnit -Filter 'Name -like "WVD"' | Format-Table Name, DistinguishedName -A #Paste Output in OUD name field
+Connect-AzAccount -Subscription $SubscriptionId | Select-AzSubscription -SubscriptionId $SubscriptionId  #connect to your azure account.
 
 Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -StorageAccountName $StorageAccountName `
  -DomainAccountType "ComputerAccount" `
- -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix" #Ensure to put in an OU with less GPO interference
+ -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix"
 
 #Download the FSLogix setup/ archive to the user downloads folder.
 
@@ -101,7 +93,7 @@ Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\x64\Release\FSLogix
 
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
 
-    New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "VHDLocations" -Value "//StorageAccountName.file.core.windows.net/ShareName" #set the  azure storage account location for the roaming profiles.
+    New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "VHDLocations" -Value "AzureFileStorageLocation" #set the  azure storage account location for the roaming profiles.
 
         New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "FlipFlopProfileDirectoryName" -Value "1" #append the username next to the SID
 
