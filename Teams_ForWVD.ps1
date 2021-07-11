@@ -78,6 +78,8 @@ $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\current
     
     $DoaminName = Read-Host -Prompt "Enter your domain name"
     
-    $DomainAdmin = Read-Host -Prompt "Enter your domain admin account"
+    $Admin = Read-Host -Prompt "Enter your domain admin account"
 
-    add-computer -DomainName $DoaminName -Credential $DomainAdmin -force | Restart-Computer -ComputerName $env:COMPUTERNAME #Join the machine to the domain. 
+    add-computer -DomainName $DoaminName -Credential $Admin -force #Join the machine to the domain.
+    
+    Restart-Computer -ComputerName $env:COMPUTERNAME # Reboot
