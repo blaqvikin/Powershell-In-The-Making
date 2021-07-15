@@ -25,15 +25,16 @@ function ValidatePSVersion
             if ($PSVersionTable.PSVersion){
                 $global:PsVer = $PSVersionTable.PSVersion}
     If ($global:PsVer -lt $minVer)
-                    {Log-Error "PowerShell version $minVer, or higher is required. Current PowerShell version is $global:PsVer. Downloading Powershell v7.1.3" 
-        
+                    {
+                        Log-Error "PowerShell version $minVer, or higher is required. Current PowerShell version is $global:PsVer. Downloading Powershell v7.1.3"   
 wget -uri https://www.microsoft.com/en-us/download/confirmation.aspx?id=54616 -OutFile $DownloadsFolder\W2K12-KB3191565-x64.msu -Verbose
 wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/PowerShell-7.1.3-win-x64.msi -OutFile $DownloadsFolder\PowerShell-7.1.3-win-x64.msi -Verbose 
         
     Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\W2K12-KB3191565-x64.msu" -ArgumentList "/q" -Wait} #Install WMF5
     Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\PowerShell-7.1.3-win-x64.msi" -ArgumentList "/q" -Wait} #Install Powershell version 7.1.3
     <#exit 1;.#>    }
-    else    { Log-Success "[OK]`n"}}
+    else    { Log-Success "[OK]`n"}
+}
 
 #Domain Join the machine if not part of the domain.
     Set-Timezone "South Africa Standard Time" #Set Timezone to +2   
