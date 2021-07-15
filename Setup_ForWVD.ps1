@@ -17,7 +17,6 @@ Install-module Az -force #Required module.
 Install-module ActiveDirectory -force #Required module.
 
 [System.Version]$global:PsVer = "0.0" # Default value
-
 #Validate PS version
 function ValidatePSVersion
 {
@@ -37,7 +36,8 @@ wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/Powe
     else    { Log-Success "[OK]`n"}}
 
 #Domain Join the machine if not part of the domain.
-    Set-Timezone "South Africa Standard Time" #Set Timezone to +2    
+    Set-Timezone "South Africa Standard Time" #Set Timezone to +2   
+    Get-WmiObject -class Win32_computerSystem.PartOfDomain 
     $DomainName = Read-Host -Prompt "Enter your domain name"
     $Admin = Read-Host -Prompt "Enter your domain admin account"
     add-computer -DomainName $DomainName -Credential $Admin -force #Join the machine to the domain.
@@ -48,7 +48,6 @@ $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\current
 
 #Download the AzFilesHybrid archive to the user downloads folder.
 wget -uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.3/AzFilesHybrid.zip -OutFile $DownloadsFolder\AzFilesHybrid.zip
-
 Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip 
 
 Set-location -LiteralPath ./AzFilesHybrid
@@ -72,7 +71,6 @@ Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix" #Ensure to put in an OU with less GPO interference
 
 #Download the FSLogix setup/ archive to the user downloads folder.
-
 wget -Uri "https://aka.ms/fslogix_download" -OutFile $DownloadsFolder\fslogix.zip
     Expand-Archive -LiteralPath $DownloadsFolder\fslogix.zip
 
@@ -81,7 +79,6 @@ wget -Uri "https://aka.ms/fslogix_download" -OutFile $DownloadsFolder\fslogix.zi
     Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\x64\Release\FSLogixAppsJavaRuleEditorSetup.exe" -ArgumentList "/q" -Wait} #FSLogixAppsJavaRuleEditorSetup
 
 #New-Item 'HKLM:\SOFTWARE\FSLogix\Profiles'
-
     New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
     New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "VHDLocations" -Value "//StorageAccountName.file.core.windows.net/ShareName" #set the  azure storage account location for the roaming profiles.
     New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "FlipFlopProfileDirectoryName" -Value "1" #append the username next to the SID
@@ -99,7 +96,6 @@ Get-AzADGroup -SearchString "WVD" | Format-Table
     Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
-
 CMD /c net use W: \\storageAccount.file.core.windows.net\fileShare "xxx-xxx-xxx-xxxx" /user:Azure\storageAccount 
 
 #Update the NTFS permissions of the Azure FileShare.
@@ -157,14 +153,13 @@ Get-AzADGroup -SearchString "WVD" | Format-Table
 New-AzRoleAssignment -objectId "ReplaceWithOBJidFromAbove" -ResourceGroupName $ResourceGroupName `
 -RoleDefinitionName "Desktop Virtualization User" `
 -ResourceName $AppGroupName `
--ResourceType 'Microsoft.DesktopVirtualization/applicationGroups' `
+-ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'
 
 <#For manual installation of the AVD hosts refer to https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-powershell#register-the-virtual-machines-to-the-azure-virtual-desktop-host-pool 
 
 I'm keeping this for now
 
-Token Registration
-New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-#Export registration key for use later.
-$token = Get-AzWvdRegistrationInfo -ResourceGroupName $resourcegroupname -HostPoolName $HostPoolName
+TokenRegistration = New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+
+$token = Get-AzWvdRegistrationInfo -ResourceGroupName $resourcegroupname -HostPoolName $HostPoolName #Export registration key for use later.
 #>
