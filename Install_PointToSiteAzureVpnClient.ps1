@@ -18,4 +18,4 @@ $secureString = convertto-securestring "Fund1_K3y$" -AsPlainText -force
 
 Import-PfxCertificate -FilePath $DownloadsFolder\Fund-Prod-VNet-Gw\Fund-Prod-VNet-Gw\Generic\Fundchildcert.pfx -CertStoreLocation Cert:\CurrentUser\My -Password $secureString #Import the child cert with password
 
-   $DownloadsFolder\Fund-Prod-VNet-Gw\WindowsAmd64\VpnClientSetupAmd64.exe /Quite
+   $DownloadsFolder\\Fund-Prod-VNet-Gw\Fund-Prod-VNet-Gw\\VpnClientSetupAmd64.exe /Quite
