@@ -1,0 +1,40 @@
+#Change default kernel
+sudo apt-get install linux-image-extra-virtual
+
+sudo cp /etc/default/grub /etc/default/grub.bak
+uname -r
+
+grep -A100 submenu /boot/grub/grub.cfg |grep menuentry
+
+nano  /etc/default/grub
+
+"gnulinux-advanced-db937f23-4ed7-4c4b-8058-b23a860fae08>gnulinux-4.15.0-153-generic-advanced-db937f23-4ed7-4c4b-8058-b23a860fae08"
+
+"gnulinux-advanced-db937f23-4ed7-4c4b-8058-b23a860fae08>gnulinux-4.15.0-140-generic-advanced-db937f23-4ed7-4c4b-8058-b23a860fae08"
+
+sudo update-grub
+sudo reboot
+
+#Downgrade/Upgrade Linux Kernel
+apt-cache policy linux-image-*
+sudo apt-get install linux-image-
+
+apt-cache policy linux-headers-*
+sudo apt-get install linux-headers- 
+
+sudo apt updade-grub
+
+#Mount Azure FileShare
+sudo mkdir /mnt/public
+if [ ! -d "/etc/smbcredentials" ]; then
+sudo mkdir /etc/smbcredentials
+fi
+if [ ! -f "/etc/smbcredentials/demowvdsto.cred" ]; then
+    sudo bash -c 'echo "username=" >> /etc/smbcredentials/.cred'
+    sudo bash -c 'echo "password=" >> /etc/smbcredentials/.cred'
+    sudo bash -c 'echo "domain=azure" >> /etc/smbcredentials/.cred'
+fi
+sudo chmod 600 /etc/smbcredentials/demowvdsto.cred
+
+sudo bash -c 'echo "//.file.core.windows.net/public /mnt/public cifs nofail,vers=3.0,credentials=/etc/smbcredentials/.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+sudo mount -t cifs //.file.core.windows.net/public /mnt/public -o vers=3.0,credentials=/etc/smbcredentials/.cred,dir_mode=0777,file_mode=0777,serverino
