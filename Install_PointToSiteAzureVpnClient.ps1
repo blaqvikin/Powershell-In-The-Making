@@ -8,9 +8,6 @@ $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\current
     
    Expand-Archive $DownloadsFolder\Fund-Prod-VNet-Gw.zip #Extract the zip file
 
-   Import-Certificate -FilePath $DownloadsFolder\Fund-Prod-VNet-Gw\Fund-Prod-VNet-Gw\Generic\VpnServerRoot.cer `
-   -CertStoreLocation Cert:\LocalMachine\CA  #Import the root certificate
-
 $secureString = convertto-securestring "Fund1_K3y$" -AsPlainText -force
 
    Import-PfxCertificate -FilePath $DownloadsFolder\Fund-Prod-VNet-Gw\Fund-Prod-VNet-Gw\Generic\Fundchildcert.pfx `
