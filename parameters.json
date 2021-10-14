@@ -45,7 +45,12 @@
             "value": "ID-Master-Admin"
         },
         "adminPassword": {
-            "value": null
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/f1888c79-2863-42c3-b807-4e6f0b01e749/resourceGroups/Norbet-ID-RG/providers/Microsoft.KeyVault/vaults/ID-VM-KeyVault"
+                },
+                "secretName": "vmAdminSecret"
+            }
         },
         "patchMode": {
             "value": "Manual"
