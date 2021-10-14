@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "networkInterfaceName": {
-            "value": "id-sl-vm-nic10"
+            "value": "id-sl-vm-nic20"
         },
         "networkSecurityGroupId": {
             "value": "/subscriptions/f1888c79-2863-42c3-b807-4e6f0b01e749/resourceGroups/Norbet-ID-RG/providers/Microsoft.Network/networkSecurityGroups/ID-MS-00-nsg"
@@ -18,7 +18,7 @@
             "value": "/subscriptions/f1888c79-2863-42c3-b807-4e6f0b01e749/resourceGroups/Norbet-ID-RG/providers/Microsoft.Network/virtualNetworks/Norbet-ID-RG-vnet"
         },
         "publicIpAddressName": {
-            "value": "ID-SL-VM-pup10"
+            "value": "ID-SL-VM-pup20"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
@@ -27,10 +27,10 @@
             "value": "Basic"
         },
         "virtualMachineName": {
-            "value": "ID-SL-VM-10"
+            "value": "ID-SL-VM-20"
         },
         "virtualMachineComputerName": {
-            "value": "ID-SL-VM-10"
+            "value": "ID-SL-VM-20"
         },
         "virtualMachineRG": {
             "value": "Norbet-ID-RG"
