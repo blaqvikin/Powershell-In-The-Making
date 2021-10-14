@@ -45,7 +45,7 @@
             "type": "string"
         },
         "adminPassword": {
-            "type": "secureString"
+            "type": "secureObject"
         },
         "patchMode": {
             "type": "string"
