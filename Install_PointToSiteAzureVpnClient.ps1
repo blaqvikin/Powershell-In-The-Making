@@ -12,5 +12,3 @@ $secureString = convertto-securestring "CertificatePassword" -AsPlainText -force
 
    Import-PfxCertificate -FilePath $DownloadsFolder\ArchiveFolder\Generic\ChildCert.pfx `
    -CertStoreLocation Cert:\CurrentUser\My -Password $secureString #Import the child cert with password
-
-   Invoke-Command -ScriptBlock {Start-Process $DownloadsFolder\ArchiveFolder\Generic\WindowsAmd6\VpnClientSetupAmd64.exe} #Install the VPN client software.
