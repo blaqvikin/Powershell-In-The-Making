@@ -1,4 +1,4 @@
-# Powershell
-Powershell automation scripts.
+# Powershell, Bash, Python, Kusto
+Several scripts for automation.
 
-Note: Read through the documentation on the script to alter a few variables to best suit your needs.
+***Scripts compile by MawandaH@inobits.com***

@@ -1,0 +1,1 @@
+Invoke-Command -ComputerName (Get-Content -Path C:\Powershell\DemoFiveIPs.txt) -FilePath C:\Powershell\ID-SL-AppsToInstall.ps1
