@@ -1,6 +1,0 @@
-AzureDiagnostics  
-| where Category == "AzureSiteRecoveryJobs"
-| where OperationName == "Enable replication"
-| where TimeGenerated >= ago(24h) 
-| project VaultName = Resource, SRSInstance = ProviderName_s, TargetDestination = SourceSystem, ResultDescription, JobName = OperationName, Status = ResultType, TypeOfResource = affectedResourceType_s, BackedupResource = affectedResourceName_s, startTime_t, endTime_t, DurationMs//, policyName_s
-| sort by startTime_t desc

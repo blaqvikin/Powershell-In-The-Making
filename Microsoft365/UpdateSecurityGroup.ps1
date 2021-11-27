@@ -1,0 +1,1 @@
+Import-Csv MyObjects.csv |ForEach-Object {Add-MsolGroupMember -GroupObjectId xxx-xxx -GroupMemberType user -GroupMemberObjectId (Get-MsolUser -UserPrincipalName $_.userprincipalname).ObjectId}
