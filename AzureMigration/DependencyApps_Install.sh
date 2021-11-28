@@ -6,6 +6,7 @@
 #         Installs service map, more on service map @ "https://docs.microsoft.com/en-us/azure/azure-monitor/vm/service-map
 #
 # Assumption:   Prepare the script to be executable by chmod +X DependencyApps_Install.sh
+#
 wget "https://developmentupload.blob.core.windows.net/client-dev/LinuxMigrationIps.txt?sv=2020-08-04&si=RL-2021-Policy&sr=b&sig=bE1V7kaLJZRetEi2wGHZ8hBY8ICNK5liuE30rwz73MU%3D" -O /tmp/LinuxMigrationIps.txt
 ips='/tmp/LinuxMigrationIps.txt'
 for ip in ips
