@@ -1,0 +1,39 @@
+{
+"mode": "All",
+"parameters": {
+"resourceType": {
+  "type": "String",
+  "metadata": {
+  "displayName": "Resource type",
+  "description": "Resource type to enforce naming pattern.",
+  "strongType": "resourceTypes"
+  }
+  },
+  "resourceAbbreviation": {
+    "type": "String",
+    "metadata": {
+    "displayName": "Resource type abbreviation",
+    "description": "A short name for Azure resource type to use in resource names"
+  }
+  }
+  },
+  "policyRule": {
+      "if": {
+          "allOf": [
+              {
+              "field": "type",
+              "equals": "[[parameters('resourceType')]" 
+              },
+              {
+              "not": {
+                    "field": "name",
+                    "match": "['<prefix>', '<separator>', '<nameOfresource>', '<separator>', (parameters('resourceAbbreviation'), '##')]"
+                  }
+                }
+             ]
+      },
+      "then": {
+           "effect": "deny"
+                    }
+                }
+            }

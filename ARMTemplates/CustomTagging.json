@@ -1,0 +1,131 @@
+{
+    "properties": {
+      "displayName": "Custom - Taging",
+      "policyType": "Custom",
+      "mode": "All",
+      "metadata": {
+        "createdBy": "4b87603a-b275-42c4-b0e6-6d9c308ee11d",
+        "createdOn": "2022-02-04T08:52:49.29517Z",
+        "updatedBy": null,
+        "updatedOn": null
+      },
+      "parameters": {
+        "tagName1": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name1",
+            "description": "Name of the tag, such as 'environment'"
+          },
+          "defaultValue": "Environment"
+        },
+        "tagValue1": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name1 Value",
+            "description": "Value of the tag, such as 'production'"
+          },
+          "defaultValue": "Production"
+        },
+        "tagName2": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name2",
+            "description": "Name of the tag, such as 'application'"
+          },
+          "defaultValue": "Application"
+        },
+        "tagValue2": {
+          "type": "String",
+          "metadata": {
+            "displayName": "TagName2 Value",
+            "description": "Value of the tag, such as 'webapps'"
+          },
+          "defaultValue": "Webservices"
+        },
+        "tagName3": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name3",
+            "description": "Name of the tag, such as 'Department'"
+          },
+          "defaultValue": "Department"
+        },
+        "tagValue3": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name3 Value",
+            "description": "Value of the tag, such as 'IT'"
+          },
+          "defaultValue": "IT"
+        },
+        "tagName4": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name4",
+            "description": "Name of the tag, such as 'CreatedBy'"
+          },
+          "defaultValue": "CreatedBy"
+        },
+        "tagValue4": {
+          "type": "String",
+          "metadata": {
+            "displayName": "Tag Name4 Value",
+            "description": "Value of the tag, such as 'John Doe'"
+          },
+          "defaultValue": ""
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "[concat('tags[', parameters('tagName1'), ']')]",
+              "exists": "false"
+            },
+            {
+              "field": "[concat('tags[', parameters('tagName2'), ']')]",
+              "exists": "false"
+            },
+            {
+              "field": "[concat('tags[', parameters('tagName3'), ']')]",
+              "exists": "false"
+            },
+            {
+              "field": "[concat('tags[', parameters('tagName4'), ']')]",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "modify",
+          "details": {
+            "operations": [
+              {
+                "operation": "addOrReplace",
+                "field": "tags['Environment']",
+                "value": "[parameters('tagValue1')]"
+              },
+              {
+                "operation": "addOrReplace",
+                "field": "tags['Application']",
+                "value": "[parameters('tagValue2')]"
+              },
+              {
+                "operation": "addOrReplace",
+                "field": "tags['Department']",
+                "value": "[parameters('tagValue3')]"
+              },
+              {
+                "operation": "addOrReplace",
+                "field": "tags['CreatedBy']",
+                "value": "[parameters('tagValue4')]"
+              }
+            ],
+            "roleDefinitionIds": [
+              "/providers/Microsoft.Authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f"
+            ]
+          }
+        }
+      }
+    }
+}
