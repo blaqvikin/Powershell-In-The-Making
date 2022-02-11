@@ -64,8 +64,8 @@ Select-azsubscription -SubscriptionId $SubscriptionId
 
 #wget -uri https://www.microsoft.com/en-us/download/confirmation.aspx?id=45520
 #Get-ADDomainController -DomainName contosolab.local -ForceDiscover -Discover -service ADWS
+Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | Format-Table Name, DistinguishedName -AutoSize #Paste Output in OUD name field
 
-Get-ADOrganizationalUnit -Filter 'Name -like "WVD"' -Server DC.Domain.ext | Format-Table Name, DistinguishedName -AutoSize #Paste Output in OUD name field
 Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -StorageAccountName $StorageAccountName `
  -DomainAccountType "ComputerAccount" `
@@ -89,8 +89,8 @@ wget -Uri "https://aka.ms/fslogix_download" -OutFile $DownloadsFolder\fslogix.zi
     Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone", "Administrator", "Users"
     Remove-LocalGroupMember -Group "FSLogix ODFC Include List" -Member "Everyone", "Administrator", "Users"
 
-#Search AD for WVD group names
-Get-AzADGroup -SearchString "WVD" | Format-Table
+#Search AD for AVD group names
+Get-AzADGroup -SearchString "AVD" | Format-Table
 
 #Add the WVD Onprem AD group to the FSLogix profile list groups.
     Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix Profile Include List"
@@ -107,8 +107,8 @@ icacls W: /remove "Builtin\Users"
 Get-Acl -Path W: | Select-Object Owner
 icacls W: /grant ("ReplaceWithOutputFromAbove" + ':(OI)(CI)(IO)M')
 
-icacls W: /grant ("WVDUsersGroup" + ':(F)')
-icacls W: /grant ("WVDAdminGroup" + ':(F)')
+icacls W: /grant ("AVDUsersGroup" + ':(F)')
+icacls W: /grant ("AVDAdminGroup" + ':(F)')
 
 #Remove Mounted storage, for security reasons, it is not recommended to leave your storage account mounted using a key.
 net use W: /DELETE
@@ -142,13 +142,13 @@ New-AzWvdApplicationGroup -ResourceGroupName $ResourceGroupName `
 New-AzWvdWorkspace -ResourceGroupName $ResourceGroupName `
 -Name $WorkSpaceName `
 -Location 'UK South' `
--FriendlyName 'WVD App Group Workspace' `
+-FriendlyName 'AVD App Group Workspace' `
 -ApplicationGroupReference "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.DesktopVirtualization/applicationGroups/$AppGroupName"
 #Search for deployed application groups, copy the name to the role assignment - resourcename
 Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname | Select-Object | Format-List Name, Location
 
 #Search for Azure Virtual Desktop groups in your AD, copy the object ID
-Get-AzADGroup -SearchString "WVD" | Format-Table
+Get-AzADGroup -SearchString "AVD" | Format-Table
 
 #Add Azure Active Directory user groups to the default desktop app group for the host pool:
 New-AzRoleAssignment -objectId "ReplaceWithOBJidFromAbove" -ResourceGroupName $ResourceGroupName `
