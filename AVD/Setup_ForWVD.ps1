@@ -64,6 +64,8 @@ Select-azsubscription -SubscriptionId $SubscriptionId
 
 #wget -uri https://www.microsoft.com/en-us/download/confirmation.aspx?id=45520
 #Get-ADDomainController -DomainName contosolab.local -ForceDiscover -Discover -service ADWS
+
+# make changes to how the below command is ran, save top file
 Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | Format-Table Name, DistinguishedName -AutoSize #Paste Output in OUD name field
 
 Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
