@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "southafricanorth"
+    },
+    "subnetName": {
+      "value": "Test1"
+    },
+    "virtualNetwork": {
+      "value": "Test-Vnet"
+    },
+    "virtualMachineName": {
+      "value": "Demo-Host-05"
+    },
+    "osDiskType": {
+      "value": "StandardSSD_LRS"
+    },
+    "virtualMachineSize": {
+      "value": "Standard_D4s_v3"
+    },
+    "adminUsername": {
+      "value": "AZAdminUser"
+    },
+    "adminPassword": {
+    "reference": {
+      "keyVault": {
+      "id": "/subscriptions/d87cf5da-cda0-4635-ae11-835a5d31bf8a/resourceGroups/DevRG/providers/Microsoft.KeyVault/vaults/kv-DemoKeyVault"
+                },
+      "secretName": "AdminSecret"
+  			}
+    },
+    "diagnosticsStorageAccountName": {
+      "value": "mydemostgacc"
+    },
+    "keyVaultName": {
+      "value": "kv-DemoKeyVault"
+    }
+  }
+}

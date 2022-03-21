@@ -65,8 +65,11 @@ Select-azsubscription -SubscriptionId $SubscriptionId
 #wget -uri https://www.microsoft.com/en-us/download/confirmation.aspx?id=45520
 #Get-ADDomainController -DomainName contosolab.local -ForceDiscover -Discover -service ADWS
 
+#Create AD Group for AVD
+New-ADGroup -AVD-Users
+
 # make changes to how the below command is ran, save top file
-Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | Format-Table Name, DistinguishedName -AutoSize #Paste Output in OUD name field
+Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | select DistinguishedName #Paste Output in OUD name field
 
 Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -StorageAccountName $StorageAccountName `
@@ -150,10 +153,10 @@ New-AzWvdWorkspace -ResourceGroupName $ResourceGroupName `
 Get-AzWvdApplicationGroup -ResourceGroupName $resourcegroupname | Select-Object | Format-List Name, Location
 
 #Search for Azure Virtual Desktop groups in your AD, copy the object ID
-Get-AzADGroup -SearchString "AVD" | Format-Table
+$objectID = Get-AzADGroup -SearchString "AVD" | Select-Object objectID
 
 #Add Azure Active Directory user groups to the default desktop app group for the host pool:
-New-AzRoleAssignment -objectId "ReplaceWithOBJidFromAbove" -ResourceGroupName $ResourceGroupName `
+New-AzRoleAssignment -objectId $objectID -ResourceGroupName $ResourceGroupName `
 -RoleDefinitionName "Desktop Virtualization User" `
 -ResourceName $AppGroupName `
 -ResourceType 'Microsoft.DesktopVirtualization/applicationGroups'

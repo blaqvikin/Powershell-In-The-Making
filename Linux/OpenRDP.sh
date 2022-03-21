@@ -1,0 +1,1 @@
+xfreerdp /sec:tls /d:azureAD\devicemngr@inobitsdev365.onmicrosoft.com /v:20.71.175.163
