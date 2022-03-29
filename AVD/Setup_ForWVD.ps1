@@ -69,7 +69,7 @@ Select-azsubscription -SubscriptionId $SubscriptionId
 New-ADGroup -AVD-Users
 
 # make changes to how the below command is ran, save top file
-Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | select DistinguishedName #Paste Output in OUD name field
+Get-ADOrganizationalUnit -Filter 'Name -like "AVD"' -Server <ServerName.FullyQualifiedDomainName> | Select-Object DistinguishedName #Paste Output in OUD name field
 
 Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -StorageAccountName $StorageAccountName `
