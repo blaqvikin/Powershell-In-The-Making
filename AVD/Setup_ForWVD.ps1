@@ -102,7 +102,7 @@ Get-AzADGroup -SearchString "AVD" | Format-Table
     Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
-CMD /c net use W: \\storageAccount.file.core.windows.net\fileShare "xxx-xxx-xxx-xxxx" /user:Azure\storageAccount 
+CMD /c net use W: \\<storageAccount>.file.core.windows.net\<fileShare> "xxx-xxx-xxx-xxxx" /user:Azure\<storageAccount> 
 
 #Update the NTFS permissions of the Azure FileShare.
 
