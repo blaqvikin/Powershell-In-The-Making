@@ -45,7 +45,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser #Enable exe
 
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
-   #wget -uri https://go.microsoft.com/fwlink/?linkid=84465 -OutFile $DownloadsFolder\OneDrive.exe -Verbose #Download OneDrive
+   #wget -uri https://go.microsoft.com/fwlink/?linkid=844652 -OutFile $DownloadsFolder\OneDrive.exe -Verbose #Download OneDrive
 
     wget -uri https://aka.ms/vs/16/release/vc_redist.x64.exe -OutFile $DownloadsFolder\VisualC64.exe -Verbose #Download Visual C++
 

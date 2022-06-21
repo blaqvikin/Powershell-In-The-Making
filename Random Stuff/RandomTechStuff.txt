@@ -1,3 +1,8 @@
 Visual Studio Code is always asking for Git credentials
 - https://stackoverflow.com/questions/34400272/visual-studio-code-is-always-asking-for-git-credentials
 - "git config --global credential.helper store"
+
+Find FSMO roles
+netdom.exe query fsmo
+
+Update-Help  -Force -Ea 0

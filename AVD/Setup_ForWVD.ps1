@@ -48,7 +48,7 @@ wget -uri https://github.com/PowerShell/PowerShell/releases/download/v7.1.3/Powe
 $DownloadsFolder=Get-ItemPropertyValue 'HKCU:\software\microsoft\windows\currentversion\explorer\shell folders\' -Name '{374DE290-123F-4565-9164-39C4925E467B}'
 
 #Download the AzFilesHybrid archive to the user downloads folder.
-wget -uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.3/AzFilesHybrid.zip -OutFile $DownloadsFolder\AzFilesHybrid.zip
+wget -uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.4/AzFilesHybrid.zip -OutFile $DownloadsFolder\AzFilesHybrid.zip
 Expand-Archive -LiteralPath $DownloadsFolder\AzFilesHybrid.zip 
 
 Set-location -LiteralPath ./AzFilesHybrid
