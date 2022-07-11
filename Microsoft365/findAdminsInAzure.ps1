@@ -1,3 +1,3 @@
-$admin = get-azureaddirectoryrole | where{$_.displayname -like "administrator"}
+$admin = Get-AzureADDirectoryRole | where{$_.displayname -like "global administrator"}
 
-get-azureaddirectoryMember -objectId $admin.objectId
+Get-AzureADDirectoryRoleMember -objectId $admin.objectId
