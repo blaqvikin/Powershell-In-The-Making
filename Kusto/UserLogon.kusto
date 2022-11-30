@@ -1,0 +1,7 @@
+SigninLogs 
+| where TimeGenerated > ago(24h)
+| where Identity !contains "sync"
+| where Category == "SignInLogs" and DeviceDetail contains "deviceId" and ClientAppUsed != "Browser" and AppDisplayName == "Windows Sign In"
+| extend OperatingSystemType = DeviceDetail.operatingSystem, ComputerName = DeviceDetail.displayName, deviceTrustType = DeviceDetail.trustType
+| project CreatedDateTime, UserPrincipalName, deviceTrustType, OperatingSystemType, ComputerName, AppDisplayName//, ClientAppUsed
+//| summarize count() by Identity extend OperatingSystemType = DeviceDetail.operatingSystem, ComputerName = DeviceDetail.displayName, deviceTrustType = DeviceDetail.trustType
