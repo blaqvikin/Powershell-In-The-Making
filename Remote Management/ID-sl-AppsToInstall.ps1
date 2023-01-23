@@ -38,8 +38,8 @@ reg import $ExecFolder\AppsToInstall\AppsToInstall\DisableLockScreen.reg #Disabl
 reg import $ExecFolder\AppsToInstall\AppsToInstall\Disable_Privacy_settings_experience_on_user_logon.reg #Disable Privacy Experience
 
 #Create Auto-Login Entry
-New-ItemProperty 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon' -PropertyType "String" -Name "DefaultPassword" -Value "Buenosdiasatodos1"
-New-ItemProperty 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon' -PropertyType "String" -Name "DefaultUsername" -Value "idexperiment"
+New-ItemProperty 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon' -PropertyType "String" -Name "DefaultPassword" -Value "<InsertPassword>"
+New-ItemProperty 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon' -PropertyType "String" -Name "DefaultUsername" -Value "<InsertUsername>"
 New-ItemProperty 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon' -PropertyType "String" -Name "AutoAdminLogon" -Value "1"
 
 #Disable Sleep and Hibernation
@@ -47,7 +47,7 @@ Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' -Name "Hibernate
 Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\PolicyManager\default\Settings\AllowPowerSleep' -Name "value" -Value "0" #Disable Sleep and Power
 
 #Enable auto-logon
-Start-Process "c:\temp\AppsToInstall\AppsToInstall\Autologon.exe" -ArgumentList "/accepteula","idexperiment","localhost","Buenosdiasatodos1"
+Start-Process "c:\temp\AppsToInstall\AppsToInstall\Autologon.exe" -ArgumentList "/accepteula","<InsertUsername>","localhost","<InsertPassword>"
 
 #Download Chrome Default Profile 
 wget "https://csb1003200193460ff3.blob.core.windows.net/vmscripts/Default.zip?si=ScriptAccessPolicy&sv=2020-08-04&sr=b&sig=5CeEX%2B706Xy%2F4hAum0ks9e6jGPPP6a4Ejxk1L68bS8U%3D" -OutFile $LocalC\Default.zip

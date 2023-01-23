@@ -8,7 +8,7 @@ reg import .\DisableLockScreen.reg #Disable lockscreen
 reg import .\Disable_Privacy_settings_experience_on_user_logon.reg #Disable Privacy Experience
 
 #Enable auto-logon
-Start-Process ".\Autologon.exe" -ArgumentList "/accepteula","idexperiment","id-sl-vm-000","Buenosdiasatodos1"
+Start-Process ".\Autologon.exe" -ArgumentList "/accepteula","<InsertUsername>","localhost","<InsertPassword>"
 
 $LocalC='c:\'
 
