@@ -9,6 +9,8 @@ $SoftwareLocation = mkdir "c:\temp\migration\"
 #Download the required files
 wget "https://go.microsoft.com/fwlink/?LinkId=828603" -OutFile $SoftwareLocation\MMASetup-AMD64.exe -UseBasicParsing
 wget "https://aka.ms/dependencyagentwindows" -OutFile $SoftwareLocation\serviceMap.exe -UseBasicParsing
+
+#Upload a log analytics agent into a blob storage and referrence it like below.
 wget "https://developmentupload.blob.core.windows.net/client-dev/migrationvms.txt?sv=2020-10-02&si=RL-2022-Policy&sr=b&sig=XFOvjVDxd1dSb6dJemeqcF035c9BBykFsn7IH3%2FGOqQ%3D" -OutFile $SoftwareLocation\migrationvms.txt -UseBasicParsing
 
 $MigrationVMs = Get-Content $SoftwareLocation\migrationvms.txt #Machine IPs, based on Azure Migrate Assessment
