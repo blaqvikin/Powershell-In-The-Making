@@ -64,10 +64,10 @@ Try {
                              Write-Verbose "Creating local user ($localadmin) on ($Computer)" 
                         
                              
-                                $secureString = convertto-securestring "EnterPassword" -asplaintext -force
+                                $secureString = convertto-securestring "<InsertPassword>" -asplaintext -force
                         
                              
-                                    $localacc = New-LocalUser -Name "NewLocalUser" -Description "Local User Account" -FullName "NewLocalUser" -AccountNeverExpires -PasswordNeverExpires -Password $secureString 
+                                    $localadmin = New-LocalUser -Name "<InsertUsername>" -Description "<InsertDescription>" -FullName "<InsertUsername>" -AccountNeverExpires -PasswordNeverExpires -Password $secureString 
                         
                              
                                         Add-LocalGroupMember -Group "administrators" -Member $localadmin }

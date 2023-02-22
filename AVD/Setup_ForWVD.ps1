@@ -77,7 +77,7 @@ Join-AzStorageAccountForAuth -ResourceGroupName $ResourceGroupName `
  -OrganizationalUnitDistinguishedName "OU=OUName,DC=Domain,DC=Suffix,DC=Suffix" #Ensure to put in an OU with less GPO interference
 
 #Download the FSLogix setup/ archive to the user downloads folder.
-wget -Uri "https://aka.ms/fslogix_download" -OutFile $DownloadsFolder\fslogix.zip
+wget -Uri "https://www.microsoft.com/en-us/download/confirmation.aspx?id=104821" -OutFile $DownloadsFolder\fslogix.zip
     Expand-Archive -LiteralPath $DownloadsFolder\fslogix.zip
 
     Invoke-Command -ScriptBlock {Start-Process "$DownloadsFolder\x64\Release\FSLogixAppsSetup.exe" -ArgumentList "/q" -Wait} #Install FSLogixAppsSetup

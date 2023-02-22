@@ -1,0 +1,11 @@
+--2023-01-23 10:21:40--  https://repo.fortinet.com/repo/6.4/ubuntu/DEB-GPG-KEY
+Resolving repo.fortinet.com (repo.fortinet.com)... 208.91.114.61
+Connecting to repo.fortinet.com (repo.fortinet.com)|208.91.114.61|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1020
+Saving to: ‘STDOUT’
+
+-                                            0%[                                                                                       ]       0  --.-KB/s               -                                          100%[======================================================================================>]    1020  --.-KB/s    in 0s      
+
+2023-01-23 10:21:42 (301 MB/s) - written to stdout [1020/1020]
+
