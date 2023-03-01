@@ -98,8 +98,8 @@ wget -Uri "https://www.microsoft.com/en-us/download/confirmation.aspx?id=104821"
 Get-AzADGroup -SearchString "AVD" | Format-Table
 
 #Add the WVD Onprem AD group to the FSLogix profile list groups.
-    Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix Profile Include List"
-    Add-LocalGroupMember -Member "WVDUsersGroup" -Group "FSLogix ODFC Include List"
+    Add-LocalGroupMember -Member "Learn-AVD-Cloud-Users" -Group "FSLogix Profile Include List"
+    Add-LocalGroupMember -Member "Learn-AVD-Cloud-Users" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
 CMD /c net use W: \\<storageAccount>.file.core.windows.net\<fileShare> "xxx-xxx-xxx-xxxx" /user:Azure\<storageAccount> 
@@ -164,6 +164,10 @@ New-AzRoleAssignment -objectId $objectID -ResourceGroupName $ResourceGroupName `
 <#For manual installation of the AVD hosts refer to https://docs.microsoft.com/en-us/azure/virtual-desktop/create-host-pools-powershell#register-the-virtual-machines-to-the-azure-virtual-desktop-host-pool 
 
 I'm keeping this for now
+
+Azure Virtual Desktop #https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv
+
+Azure Virtual Desktop Agent Bootloader #https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH
 
 TokenRegistration = New-AzWvdRegistrationInfo -ResourceGroupName $ResourceGroupName -HostPoolName $hostpoolname -ExpirationTime $((get-date).ToUniversalTime().AddHours(720).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
 
