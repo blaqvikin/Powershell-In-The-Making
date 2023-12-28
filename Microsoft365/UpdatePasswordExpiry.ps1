@@ -15,7 +15,7 @@ Install-Module Microsoft.Graph
 Connect-MgGraph -Scopes "User.Read.All"
 
 # Read users and export to CSV
-Get-MgUser -All | Select-Object UserPrincipalName, PasswordNeverExpires | Export-Csv -Path "PathToCSVLocation" -NoTypeInformation
+Get-MgUser -All | Select-Object UserPrincipalName, PasswordNeverExpires | Export-Csv -Path "./All_Accounts.csv" -NoTypeInformation
 
 # Import from CSV
 $Accounts = Import-Csv -Path "PathToCSVLocation"
