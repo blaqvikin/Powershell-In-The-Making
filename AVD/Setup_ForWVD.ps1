@@ -91,7 +91,7 @@ wget -Uri "https://www.microsoft.com/en-us/download/confirmation.aspx?id=104821"
     New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "DeleteLocalProfileWhenVHDShouldApply" -Value "1"
 
 #If using Cloud cache then set the following registry entries and omit the above.
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "CCDLocations" -Value "SAS_Token"
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "CCDLocations" -Value "<ConnectionString>" #ValueData type=azure,connectionString"<connectionString>"
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ClearCacheOnLogoff" -Value "1"
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "DeleteLocalProfileWhenVHDShouldApply" -Value "1"
@@ -104,6 +104,7 @@ New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ReAttachRetryCount" -Value "3"
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "SizeInMBs" -Value "30000"
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "String" -name "VolumeType" -Value "VHDX"
+#More information on https://learn.microsoft.com/en-us/fslogix/tutorial-cloud-cache-containers
 
 #Remove the Everyone, Administrator, Users groups from being included in the FSLogix Azure File Share
     Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone", "Administrator", "Users"
