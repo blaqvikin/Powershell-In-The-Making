@@ -1,3 +1,8 @@
+// Date 18/06/2024
+// Version 0.0.1
+// Author Mawanda Hlophoyi
+// Title:  This KQL query pulls all the creation and resources changes
+
 //https://portal.azure.com/#view/HubsExtension/ArgQueryBlade
 
 resourcechanges
