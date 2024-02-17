@@ -1,0 +1,9 @@
+//https://portal.azure.com/#view/HubsExtension/ArgQueryBlade
+
+resourcechanges
+| take 2000
+//| where subscriptionId == "<subscriptionID>"
+| where properties.changeAttributes.changeType != "Delete" //Get resources that have not been deleted.
+//| project targetResourceId, changeType, changeTime
+| project subscriptionId, resourceGroup, location, properties.changeType, properties.changeAttributes.timestamp, properties.targetResourceType
+//| sort by properties_changeType
