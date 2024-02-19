@@ -1,0 +1,20 @@
+resourcechanges
+| take 1000
+| where properties.changeAttributes.changeType != "Delete" //Get resources that have not been deleted.
+| join kind=inner ( //Combine with the resourcecontainers table to extract the subscription name
+    resourcecontainers
+    | where type == "microsoft.resources/subscriptions"
+) on subscriptionId
+// Display the results in the following order.
+| extend ResourceTypeParts = split(properties.targetResourceType, "/") //Focus only on the last portion of the resource type ID
+| extend ResourceIdParts = split(properties.targetResourceId, "/")
+| project 
+    subscriptionId, 
+    SubscriptionName = name1, //Pull the name1 value from resourceContainers, this provides the SubscriptionName.
+    resourceGroup, 
+    location, 
+    properties.changeType, 
+    Timestamp = tostring(split(properties.changeAttributes.timestamp, "T")[0]),// Clean the timestamp, using the format_datetime seems to cause problems.
+    ResourceType = tostring(ResourceTypeParts[-1]), 
+    TargetResourceId = tostring(ResourceIdParts[-1])
+| sort by Timestamp desc 
