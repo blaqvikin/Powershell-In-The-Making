@@ -1,0 +1,30 @@
+// Title: Find Azure Resource Changes in the platform.
+// Version: 0.0.4
+// Author: Mawanda Hlophoyi
+// Description: This KQL query finds all the changes (update, delete, create) that have occured in the Azure platform, this can be restricted to a tenant, management group, subscription and resource group.
+resourcechanges
+| take 1000 //For testing purposes, take the top 1000
+| where properties.changeAttributes.changeType != "Delete" and properties.changeAttributes.changedBy != "Unspecified"
+| join kind=inner (
+    resourcecontainers
+    | where type == "microsoft.resources/subscriptions"
+) on subscriptionId
+| join kind=inner (
+    // Join with resources table to get user-assigned identity name
+    resources
+    | where type == "microsoft.managedidentity/userassignedidentities"
+) on subscriptionId //properties.changeAttributes.changedBy == properties.clientId
+| extend ResourceTypeParts = split(properties.targetResourceType, "/")
+| extend ResourceIdParts = split(properties.targetResourceId, "/")
+| project
+    subscriptionId, 
+    SubscriptionName = name1, 
+    resourceGroup, 
+    location, 
+    properties.changeType,
+    ChangedByName = name2, // Project name from resources table
+    properties.changeAttributes.changedByType,
+    Timestamp = tostring(split(properties.changeAttributes.timestamp, "T")[0]),
+    ResourceType = tostring(ResourceTypeParts[-1]), 
+    TargetResourceId = tostring(ResourceIdParts[-1])
+| sort by Timestamp desc
