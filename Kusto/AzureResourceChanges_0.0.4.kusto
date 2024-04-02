@@ -4,7 +4,7 @@
 // Description: This KQL query finds all the changes (update, delete, create) that have occured in the Azure platform, this can be restricted to a tenant, management group, subscription and resource group.
 resourcechanges
 | take 1000 //For testing purposes, take the top 1000
-| where properties.changeAttributes.changeType != "Delete" and properties.changeAttributes.changedBy != "Unspecified"
+| where properties.changeType != "Delete" and properties.changeAttributes.changedBy != "Unspecified"
 | join kind=inner (
     resourcecontainers
     | where type == "microsoft.resources/subscriptions"
