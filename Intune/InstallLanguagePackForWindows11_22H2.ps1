@@ -1,0 +1,56 @@
+# Define variables with clear descriptions
+$languageTag = "he-IL"  # Language code for Hebrew (Israel) (Replace with desired language code)
+$downloadUrl = "https://learnpublicshare.blob.core.windows.net/languagefiles/LanguageExperiencePack.he-IL.Neutral.zip?si=rl&spr=https&sv=2022-11-02&sr=b&sig=m%2BOwyDfL%2FLOJnaHIf5YtODPlzlQicOqFzsLNUp%2B5pw0%3D"  # Update download URL for your language
+$downloadPath = "C:\Temp\LanguagePackFiles"  # Temporary download location
+
+# Function to check if Hebrew LXP is installed
+function Is-LxpInstalled {
+  Get-Language | ? {$_.LanguagePacks -notmatch 'LXP' -and $_.LanguageId -notmatch 'he-IL'} #I need to work on this part to validate if this match is invalid then install 
+}
+
+# Check if Hebrew LXP is already installed
+if (Is-LxpInstalled) {
+  Write-Host "Hebrew Language Experience Pack is already installed."
+  exit 0  # Exit with success code (0)
+}
+
+# Create temporary download directory (ignore errors if it exists)
+New-Item -Path $downloadPath -ItemType Directory -ErrorAction SilentlyContinue
+
+# Download the LXP zip file
+Invoke-WebRequest -Uri $downloadUrl -UseBasicParsing -OutFile "$downloadPath\LanguageExperiencePack.zip"
+
+Write-Host "Downloading Hebrew Language Experience Pack..."
+
+# Extract the downloaded zip file
+Expand-Archive -LiteralPath "$downloadPath\LanguageExperiencePack.zip" -DestinationPath $downloadPath
+
+# Set execution path
+Set-Location -Path $downloadPath
+
+# Install the LXP for Windows 11
+Add-WindowsPackage -Online -PackagePath "$downloadPath\LanguageExperiencePack.he-IL.Neutral.appx" -LicensePath "$downloadPath\License.xml"
+
+Write-Host "Installing Hebrew Language Experience Pack..."
+
+# Install additional language features (consider compatibility and testing thoroughly)
+# These paths are based on the downloadPath and might need adjustments based on your download location
+
+# Basic language features
+Add-WindowsPackage -Online -PackagePath "$downloadPath\Microsoft-Windows-LanguageFeatures-Basic-$languageTag-Package~31bf3856ad364e35~amd64~~.cab"
+
+# Fonts
+Add-WindowsPackage -Online -PackagePath "$downloadPath\Microsoft-Windows-LanguageFeatures-Fonts-$languageTag-Package~31bf3856ad364e35~amd64~~.cab"
+
+# Text-to-Speech
+Add-WindowsPackage -Online -PackagePath "$downloadPath\Microsoft-Windows-LanguageFeatures-TextToSpeech-$languageTag-Package~31bf3856ad364e35~amd64~~.cab"
+
+# Set Hebrew as the system language
+Set-SystemPreferredUILanguage $languageTag -Force
+
+Write-Host "Finished installing Hebrew Language Experience Pack and features."
+
+# Optional steps (not recommended for production):
+# - Disable Language Pack Cleanup (consider security implications)
+
+exit 0  # Exit with success code (0)
