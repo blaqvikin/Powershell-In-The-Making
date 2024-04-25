@@ -29,7 +29,7 @@ Expand-Archive -LiteralPath "$downloadPath\LanguageExperiencePack.zip" -Destinat
 Set-Location -Path $downloadPath
 
 # Install the LXP for Windows 11
-#Add-AppProvisionedPackage -Online -PackagePath "$downloadPath\LanguageExperiencePack.he-IL.Neutral.appx" -LicensePath "$downloadPath\License.xml"
+Add-AppProvisionedPackage -Online -PackagePath "C:\Temp\LanguagePackFiles\LanguageExperiencePack.he-IL.Neutral.appx" -LicensePath "C:\Temp\LanguagePackFiles\License.xml"
 
 Write-Host "Installing Hebrew Language Experience Pack..."
 
@@ -49,7 +49,7 @@ Add-WindowsPackage -Online -PackagePath "$downloadPath\Microsoft-Windows-Languag
 Add-WindowsPackage -Online -PackagePath "$downloadPath\Microsoft-Windows-LanguageFeatures-TextToSpeech-he-il-Package~31bf3856ad364e35~amd64~~.cab"
 
 # Set Hebrew as the system language
-Set-SystemPreferredUILanguage $languageTag -Force
+Set-SystemPreferredUILanguage $languageTag
 
 Write-Host "Finished installing Hebrew Language Experience Pack and features."
 
