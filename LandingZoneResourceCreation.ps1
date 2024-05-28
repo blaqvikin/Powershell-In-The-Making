@@ -2,17 +2,17 @@
 Param(
     [string]$duration = "2",
 
-    [string]$userID = "tenantRoot@rainkloud.xyz",
+    [string]$userID = "<Username>",
 
     [string]$TCKey,
 
-    [string]$createdBy = "tenantRoot@rainkloud.xyz",
+    [string]$createdBy = "<Username>",
 
     [string]$resourceGroupName = "SAN-BaseInfra",
 
     [string]$Environment = "nonprod",
 
-    [string]$SubscriptionName = "Rainkloud – MPN",
+    [string]$SubscriptionName = "<SubscriptionName>",
 
     [string]$BusinessUnit = "finance",
 
@@ -24,7 +24,7 @@ Param(
     $tags = @{"Duration"=$duration;"TCKey"=$TCKey;"CreatedOnDate"=$currentDate;"createdBy"=$createdBy;"BillingApplicationName"="Public Cloud Training";"Manager"=$Manager}
     
     #Connect to Azure
-    Connect-AzAccount -SubscriptionName $SubscriptionName -TenantId "f1bab897-81b9-448a-b802-6358c197996f"
+    Connect-AzAccount -SubscriptionName $SubscriptionName -TenantId "<TenantID>"
     
     #Set subscription context | SB-SBG-InfrastructureTest-NonProd | 88203e18-d026-411d-b6b1-9b2dd235a7ed
     Get-AzSubscription -SubscriptionName $SubscriptionName | Set-AzContext
@@ -55,7 +55,7 @@ Param(
       $kVaultPrefix = 'kv'
       $NSGPrefix = 'nsg'
 
-      az pipelines show --name IpamReservationTool --org https://dev.azure.com/standardbank --project {AzureServiceCatalogue} --detect false
+      az pipelines show --name IpamReservationTool --org <ADO_Project> --project {AzureServiceCatalogue} --detect false
 
 
       # Import the Azure DevOps PowerShell module
@@ -112,12 +112,12 @@ Import-Module Invoke-RestMethod
 Import-Module Invoke-RestMethod
 
 # Set the Azure Naming Tool REST API endpoint
-$apiUrl = "https://aznamingtool-sbsa.azurewebsites.net/api/ResourceComponents?admin=false"
+$apiUrl = "<EndpointURL>"
 
 # Set the HTTP request headers
 $headers = @{
     Accept = "*/*"
-    APIKey = "d160c281-73c8-4d33-9125-395f24498258"
+    APIKey = "<APIKey>"
 }
 
 # Invoke the Azure Naming Tool REST API
@@ -133,7 +133,7 @@ foreach ($resourceComponent in $resourceComponents) {
 
 
 # Get the list of resource components
-$resourceComponents = Invoke-RestMethod -Uri "https://aznamingtool-sbsa.azurewebsites.net/api/ResourceComponents?admin=false" -Method Get -Headers @{ Accept = "*/*"; APIKey = "d160c281-73c8-4d33-9125-395f24498258" }.Content
+$resourceComponents = Invoke-RestMethod -Uri "<EndpointURL>" -Method Get -Headers @{ Accept = "*/*"; APIKey = "<APIKey>" }.Content
 
 # Construct the compliant name for the Azure virtual machine
 $compliantName = "my-vm-{0}".Format($resourceComponents.First().Name)
@@ -205,5 +205,4 @@ Write-Host $compliantName
       #Peering to hub vNet
       #Ensure we don't have config drift
       #If sub is prod then this mgmt 
-  #sa0115007@standardbank.onmicrosoft.com is used to create subs
   #Move sub to respective mgmt group based on zar, sbg, nonprod / prod
