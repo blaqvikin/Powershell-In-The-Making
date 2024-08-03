@@ -92,21 +92,26 @@ wget -Uri "https://www.microsoft.com/en-us/download/confirmation.aspx?id=104821"
 
 #If using Cloud cache then set the following registry entries and omit the above.
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "MultiString" -name "CCDLocations" -Value "<ConnectionString>" #ValueData type=azure,connectionString"<connectionString>"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ClearCacheOnLogoff" -Value "1"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "DeleteLocalProfileWhenVHDShouldApply" -Value "1"
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ClearCacheOnLogoff" -Value "1" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "Enabled" -Value "1" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "DeleteLocalProfileWhenVHDShouldApply" -Value "1" -Force
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "FlipFlopProfileDirectoryName" -Value "1" #append the username next to the SID
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "HealthyProvidersRequiredForRegister" -Value "1"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "LockedRetryCount" -Value "3"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "LockedRetryInterval" -Value "15"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ProfileType" -Value "0"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ReAttachIntervalSeconds" -Value "15"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ReAttachRetryCount" -Value "3"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "SizeInMBs" -Value "30000"
-New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "String" -name "VolumeType" -Value "VHDX"
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "HealthyProvidersRequiredForRegister" -Value "1" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "LockedRetryCount" -Value "3" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "LockedRetryInterval" -Value "15" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ProfileType" -Value "0" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ReAttachIntervalSeconds" -Value "15" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "ReAttachRetryCount" -Value "3" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "SizeInMBs" -Value "30000" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "String" -name "VolumeType" -Value "VHDX" -Force
 #More information on https://learn.microsoft.com/en-us/fslogix/tutorial-cloud-cache-containers
+#Performance and stability-related FSLogix settings
+#For more information: https://learn.microsoft.com/en-us/fslogix/reference-configuration-settings?tabs=profiles
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "CleanupInvalidSessions" -Value "1" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "RoamRecycleBin" -Value "1" -Force
+New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "CleanOutNotifications" -Value "1" -Force
 
-#Remove the Everyone, Administrator, Users groups from being included in the FSLogix Azure File Share
+#Remove the Everyone, Administrator, and Users groups from being included in the FSLogix Azure File Share
     Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone", "Administrator", "Users"
     Remove-LocalGroupMember -Group "FSLogix ODFC Include List" -Member "Everyone", "Administrator", "Users"
 
