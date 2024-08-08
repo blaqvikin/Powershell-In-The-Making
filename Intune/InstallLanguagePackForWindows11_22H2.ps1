@@ -1,6 +1,6 @@
 # Define variables with clear descriptions
 $languageTag = "he-IL"  # Language code for Hebrew (Israel) (Replace with desired language code)
-$downloadUrl = "https://learnpublicshare.blob.core.windows.net/languagefiles/LanguageExperiencePack.he-IL.Neutral.zip?si=rl&spr=https&sv=2022-11-02&sr=b&sig=m%2BOwyDfL%2FLOJnaHIf5YtODPlzlQicOqFzsLNUp%2B5pw0%3D"  # Update download URL for your language
+$downloadUrl = "URL"  # Update download URL for your language
 $downloadPath = "C:\Temp\LanguagePackFiles"  # Temporary download location
 
 # Function to check if Hebrew LXP is installed
@@ -14,8 +14,12 @@ if (Is-LxpInstalled) {
   exit 0  # Exit with success code (0)
 }
 
+# Check if the download path exists
+if (-not (Test-Path $downloadPath)) {
+  Write-Host "The download path $downloadPath does not exist. Creating it..."
 # Create temporary download directory (ignore errors if it exists)
 New-Item -Path $downloadPath -ItemType Directory -ErrorAction SilentlyContinue
+}
 
 # Download the LXP zip file
 Invoke-WebRequest -Uri $downloadUrl -UseBasicParsing -OutFile "$downloadPath\LanguageExperiencePack.zip"
