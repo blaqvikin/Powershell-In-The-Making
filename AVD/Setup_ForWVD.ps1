@@ -135,6 +135,7 @@ icacls W: /grant ("ReplaceWithOutputFromAbove" + ':(OI)(CI)(IO)M')
 
 icacls W: /grant ("AVDUsersGroup" + ':(F)')
 icacls W: /grant ("AVDAdminGroup" + ':(F)')
+icacls <mapped-drive-letter>: /grant <user-upn>:(f)
 
 #Remove Mounted storage, for security reasons, it is not recommended to leave your storage account mounted using a key.
 net use W: /DELETE
