@@ -111,16 +111,21 @@ New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "Clea
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "RoamRecycleBin" -Value "1" -Force
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "CleanOutNotifications" -Value "1" -Force
 
+#Add the WVD Onprem AD group to the FSLogix profile list groups.
+Add-LocalGroupMember -Member "STL-VDI-HighlyPrivilegedAdmin" -Group "FSLogix Profile Exclude List"
+Add-LocalGroupMember -Member "STL-VDI-HighlyPrivilegedAdmin" -Group "FSLogix ODFC Exclude List"
+ 
+Add-LocalGroupMember -Member "VDI Users Groups" -Group "FSLogix Profile Include List"
+Add-LocalGroupMember -Member "VDI Users Groups" -Group "FSLogix ODFC Include List"
+Add-LocalGroupMember -Member "<Local Administrator Account>" -Group "Remote Desktop Users" #This is for the default local account that is created during the VDI VM deployment
+
 #Remove the Everyone, Administrator, and Users groups from being included in the FSLogix Azure File Share
-    Remove-LocalGroupMember -Group "FSLogix Profile Include List" -Member "Everyone", "Administrator", "Users"
-    Remove-LocalGroupMember -Group "FSLogix ODFC Include List" -Member "Everyone", "Administrator", "Users"
+ 
+Remove-LocalGroupMember -Member "Non-VDI Users/Administrators", "Everyone" -Group "FSLogix Profile Include List"
+Remove-LocalGroupMember -Member "Non-VDI Users/Administrators", "Everyone" -Group "FSLogix ODFC Include List"
 
 #Search AD for AVD group names
 Get-AzADGroup -SearchString "AVD" | Format-Table
-
-#Add the WVD Onprem AD group to the FSLogix profile list groups.
-    Add-LocalGroupMember -Member "Learn-AVD-Cloud-Users" -Group "FSLogix Profile Include List"
-    Add-LocalGroupMember -Member "Learn-AVD-Cloud-Users" -Group "FSLogix ODFC Include List"
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
 CMD /c net use W: \\<storageAccount>.file.core.windows.net\<fileShare> "xxx-xxx-xxx-xxxx" /user:Azure\<storageAccount> 
@@ -135,7 +140,7 @@ icacls W: /grant ("ReplaceWithOutputFromAbove" + ':(OI)(CI)(IO)M')
 
 icacls W: /grant ("AVDUsersGroup" + ':(F)')
 icacls W: /grant ("AVDAdminGroup" + ':(F)')
-icacls <mapped-drive-letter>: /grant <user-upn>:(f)
+icacls W: /grant <user-upn>:(f)
 
 #Remove Mounted storage, for security reasons, it is not recommended to leave your storage account mounted using a key.
 net use W: /DELETE
