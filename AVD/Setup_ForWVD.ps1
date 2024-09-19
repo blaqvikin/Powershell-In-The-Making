@@ -111,27 +111,26 @@ New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "Clea
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Apps' -PropertyType "DWord" -name "RoamRecycleBin" -Value "1" -Force
 New-ItemProperty 'HKLM:\SOFTWARE\FSLogix\Profiles' -PropertyType "DWord" -name "CleanOutNotifications" -Value "1" -Force
 
-#Add the WVD Onprem AD group to the FSLogix profile list groups.
-Add-LocalGroupMember -Member "STL-VDI-HighlyPrivilegedAdmin" -Group "FSLogix Profile Exclude List"
-Add-LocalGroupMember -Member "STL-VDI-HighlyPrivilegedAdmin" -Group "FSLogix ODFC Exclude List"
- 
+#Search AD for AVD group names
+Get-AzADGroup -SearchString "AVD" | Format-Table
+
+#Add the WVD Onprem AD group to the FSLogix profile/ODFC excluded list groups, this ensures that these users don't need FSLogix.
+Add-LocalGroupMember -Member "Non-VDI Users/Administrators" -Group "FSLogix Profile Exclude List"
+Add-LocalGroupMember -Member "Non-VDI Users/Administrators" -Group "FSLogix ODFC Exclude List"
+
+#These are FSLogix profile/ODFC users.
 Add-LocalGroupMember -Member "VDI Users Groups" -Group "FSLogix Profile Include List"
 Add-LocalGroupMember -Member "VDI Users Groups" -Group "FSLogix ODFC Include List"
 Add-LocalGroupMember -Member "<Local Administrator Account>" -Group "Remote Desktop Users" #This is for the default local account that is created during the VDI VM deployment
 
-#Remove the Everyone, Administrator, and Users groups from being included in the FSLogix Azure File Share
- 
+#Remove the Everyone, Administrator, and Users groups from being included in the FSLogix Azure File Share 
 Remove-LocalGroupMember -Member "Non-VDI Users/Administrators", "Everyone" -Group "FSLogix Profile Include List"
 Remove-LocalGroupMember -Member "Non-VDI Users/Administrators", "Everyone" -Group "FSLogix ODFC Include List"
-
-#Search AD for AVD group names
-Get-AzADGroup -SearchString "AVD" | Format-Table
 
 #Silently mount the FSLogix file share to apply the NTFS permissions.
 CMD /c net use W: \\<storageAccount>.file.core.windows.net\<fileShare> "xxx-xxx-xxx-xxxx" /user:Azure\<storageAccount> 
 
 #Update the NTFS permissions of the Azure FileShare.
-
 icacls W: /remove "Authenticated Users"
 icacls W: /remove "Builtin\Users"
 
@@ -149,6 +148,7 @@ net use W: /DELETE
 $HostPoolName = Read-Host -Prompt "Create a host pool name"
 $AppGroupName = Read-Host -Prompt "Create an application group name 'Dekstop/RemoteApp'"
 $WorkSpaceName = Read-Host -Prompt "Create a workspace for your Azure Virtual Desktop app groups"
+
 #New host pool group with meta-data in UK South.
 New-AzWvdHostPool -ResourceGroupName $ResourceGroupName `
  -Name $HostPoolName `
