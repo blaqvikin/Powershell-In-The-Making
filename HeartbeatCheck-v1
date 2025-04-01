@@ -1,0 +1,9 @@
+let machines = dynamic(["MCBLIC", "INDC1VMDC101", "MCBHEALTHCARE", "ISDC1VMPURV101", "INDC2VMCA201", 
+                        "APDC1VMDBGFT101", "APDC1VMGFTS101", "INAZUVMDEL001", "X-INAZUVMPRT001", 
+                        "DEVAZUSOAVD-0", "inazuvmbytps001", "indcuvmbytc001", "inazuvmdc001", 
+                        "INAZUVMBYTEC001", "INAZUVMBYTJM001", "AZUVMAVDKRL-0"]); 
+Heartbeat
+| where TimeGenerated >= ago(24h)  // Last 24 hours
+| where Computer in (machines)  // Filter by machine names
+| project TimeGenerated, Computer, ComputerIP, Resource, OSType, Category
+| order by TimeGenerated desc
