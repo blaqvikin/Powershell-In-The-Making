@@ -7,3 +7,24 @@ Heartbeat
 | where Computer in (machines)  // Filter by machine names
 | project TimeGenerated, Computer, ComputerIP, Resource, OSType, Category
 | order by TimeGenerated desc
+
+
+let machines = dynamic(["MCBLIC", "INDC1VMDC101", "MCBHEALTHCARE", "ISDC1VMPURV101", 
+                        "INDC2VMCA201", "APDC1VMDBGFT101", "APDC1VMGFTS101", "INAZUVMDEL001", 
+                        "X-INAZUVMPRT001", "DEVAZUSOAVD-0", "inazuvmbytps001", "indcuvmbytc001", 
+                        "inazuvmdc001", "INAZUVMBYTEC001", "INAZUVMBYTJM001", "AZUVMAVDKRL-0"]);
+let heartbeatMachines = 
+    Heartbeat
+    | where TimeGenerated >= ago(24h)
+    | summarize LastHeartbeat=max(TimeGenerated) by Computer
+    | project Computer, LastHeartbeat;
+// Compare lists
+let missingMachines = 
+    tostring(split(strcat_array(set_difference(machines, heartbeatMachines.Computer), ","), ","));
+heartbeatMachines
+| extend Status = "Reporting"
+| union (datatable(Computer: string, LastHeartbeat: datetime, Status: string)
+    {datatable(Computer: string) 
+        (missingMachines)
+    | extend LastHeartbeat = datetime(null), Status = "Missing"})
+| order by Status asc, LastHeartbeat desc
