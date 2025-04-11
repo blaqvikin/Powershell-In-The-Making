@@ -1,0 +1,21 @@
+// Query to find top ingesting DCRs with their source servers
+Usage
+| where TimeGenerated > ago(7d)
+| where DataType != "Heartbeat"
+| summarize IngestionVolumeMB = sum(Quantity) / 1000000 by DataType, _ResourceId
+| extend DCRName = tostring(split(_ResourceId, '/')[-1])
+| extend SourceComputer = tostring(split(_ResourceId, '/')[-3])
+| project DCRName, SourceComputer, DataType, IngestionVolumeMB
+| order by IngestionVolumeMB desc
+
+// Graph Explorer
+Resources
+| where type == "microsoft.insights/datacollectionrules"
+| extend dataFlows = properties.dataFlows
+| join kind=leftouter (
+    Usage
+    | where TimeGenerated > ago(7d)
+    | summarize IngestionVolumeMB = sum(Quantity) / 1000000 by _ResourceId
+) on $left.id == $right._ResourceId
+| project name, id, dataFlows, IngestionVolumeMB = coalesce(IngestionVolumeMB, 0)
+| order by IngestionVolumeMB desc
