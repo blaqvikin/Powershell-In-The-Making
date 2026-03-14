@@ -8,7 +8,7 @@
 # Assumption:   Prepare the script to be executable by chmod +X DependencyApps_Install.sh
 #
 #Compile a list of the Linux servers IPs and upload to repository that you can reference below.
-wget "https://developmentupload.blob.core.windows.net/client-dev/LinuxMigrationIps.txt?sv=2020-08-04&si=RL-2021-Policy&sr=b&sig=bE1V7kaLJZRetEi2wGHZ8hBY8ICNK5liuE30rwz73MU%3D" -O /tmp/LinuxMigrationIps.txt
+wget "https://sbgsanimagegallery.blob.core.windows.net/customscriptextension/AzureCloudLinux.zip?si=rl&spr=https&sv=2022-11-02&sr=b&sig=2DsRHKEOzGccG1soZXAr8hQJX%2FQoRXWSZ9%2BJidqZGWg%3D" -O /tmp/LinuxMigrationIps.txt
 ips='/tmp/LinuxMigrationIps.txt'
 for ip in ips
 do

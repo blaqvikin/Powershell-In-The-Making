@@ -8,7 +8,7 @@ Param(
 
     [string]$createdBy = "<Username>",
 
-    [string]$resourceGroupName = "SAN-BaseInfra",
+    [string]$resourceGroupName = "<resourceGroupName>",
 
     [string]$Environment = "nonprod",
 
@@ -26,7 +26,7 @@ Param(
     #Connect to Azure
     Connect-AzAccount -SubscriptionName $SubscriptionName -TenantId "<TenantID>"
     
-    #Set subscription context | SB-SBG-InfrastructureTest-NonProd | 88203e18-d026-411d-b6b1-9b2dd235a7ed
+    #Set subscription context | 
     Get-AzSubscription -SubscriptionName $SubscriptionName | Set-AzContext
 
     #Check if RG exists
@@ -56,7 +56,7 @@ Param(
       $NSGPrefix = 'nsg'
 
       az pipelines show --name IpamReservationTool --org <ADO_Project> --project {AzureServiceCatalogue} --detect false
-
+## mono EvtxECmd.exe -f path/to/your/file.evtx --csv path/to/output
 
       # Import the Azure DevOps PowerShell module
       Import-Module Az.Pipelines
@@ -72,7 +72,6 @@ Param(
 
       # Print the output of the "Build" task
       Write-Host $buildOutput
-
 
       # Call the IPAM API
       #$CallIPAMAPIforAccessToekn = Get-AzAccessToken -ResourceUrl "" -TenantId ""
@@ -140,8 +139,6 @@ $compliantName = "my-vm-{0}".Format($resourceComponents.First().Name)
 
 # Print the compliant name
 Write-Host $compliantName
-
-
 
       # Declare variables for network resource creation
       $vNETName = "${vNETPrefix}-${SelectedRegion}-${businessUnit}-${Environment}"

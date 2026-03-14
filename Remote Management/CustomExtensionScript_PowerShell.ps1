@@ -443,7 +443,7 @@ function Get-FlexeraStatus {
      "Sending message to console" >> $Log
      $name = "Localhost"
      $msg = "Hello fellow Azurian.`
-     Mandatory Bank Policy and Software has been installed which requires a reboot.`
+     Mandatory Business Policy and Software has been installed which requires a reboot.`
      Please reboot this machine asap."
      Invoke-WmiMethod -Path Win32_Process -Name Create -ArgumentList "msg * $msg" -ComputerName $name
  }
