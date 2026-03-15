@@ -1,0 +1,22 @@
+# Define variables
+$FirstName = "Migration"
+$LastName = "SPN"
+$UserName = "MigrationSPN"
+$Password = "P@ssw0rd!"  # Use a strong password, modify as necessary
+$OU = "OU=ServiceAccounts,DC=yourdomain,DC=com"  # Change to your desired OU
+
+# Import Active Directory module
+Import-Module ActiveDirectory
+
+# Create a new service account
+New-ADUser -Name "$FirstName $LastName" `
+           -GivenName $FirstName `
+           -Surname $LastName `
+           -SamAccountName $UserName `
+           -UserPrincipalName "$UserName@yourdomain.com" `
+           -Path $OU `
+           -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) `
+           -Enabled $true
+
+# Confirm that the user has been created
+Get-ADUser -Identity $UserName
