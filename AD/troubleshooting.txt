@@ -364,3 +364,141 @@ Ethernet adapter Ethernet:
    NetBIOS over Tcpip. . . . . . . . : Enabled
 
 C:\Users\amandagonzalez_cbc>
+
+Troubleshooting : Workstation:
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\amandagonzalez_cbc> whoami /all
+
+USER INFORMATION
+----------------
+
+User Name              SID
+====================== =============================================
+xyz\amandagonzalez_cbc S-1-5-21-775438850-3369346780-1388710907-1165
+
+
+GROUP INFORMATION
+-----------------
+
+Group Name                                 Type             SID                                            Attributes   
+========================================== ================ ============================================== ==================================================
+Everyone                                   Well-known group S-1-1-0                                        Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4                                        Mandatory group, Enabled by default, Enabled group
+CONSOLE LOGON                              Well-known group S-1-2-1                                        Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                       Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15                                       Mandatory group, Enabled by default, Enabled group
+LOCAL                                      Well-known group S-1-2-0                                        Mandatory group, Enabled by default, Enabled group
+XYZ\XYZ-SG-Finance-Team                    Group            S-1-5-21-775438850-3369346780-1388710907-1155  Mandatory group, Enabled by default, Enabled group
+XYZ\amandagonzalez_CBC                     User             S-1-5-21-3147001572-2836814592-1821215285-1174 Mandatory group, Enabled by default, Enabled group
+Authentication authority asserted identity Well-known group S-1-18-1                                       Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192                                                 
+
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                          State
+============================= ==================================== ========
+SeShutdownPrivilege           Shut down the system                 Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Disabled
+SeIncreaseWorkingSetPrivilege Increase a process working set       Disabled
+SeTimeZonePrivilege           Change the time zone                 Disabled
+
+
+USER CLAIMS INFORMATION
+-----------------------
+
+User claims unknown.
+
+Kerberos support for Dynamic Access Control on this device has been disabled.
+PS C:\Users\amandagonzalez_cbc> set l
+PS C:\Users\amandagonzalez_cbc> echo %LOGONSERVER%
+%LOGONSERVER%
+PS C:\Users\amandagonzalez_cbc> nslookup s-fs1.cbc.local
+Server:  UnKnown
+Address:  192.168.100.20
+
+Non-authoritative answer:
+Name:    s-fs1.cbc.local
+Address:  192.168.100.34
+
+PS C:\Users\amandagonzalez_cbc> nslookup cbc.local
+Server:  UnKnown
+Address:  192.168.100.20
+
+Non-authoritative answer:
+Name:    cbc.local
+Address:  192.168.100.30
+
+PS C:\Users\amandagonzalez_cbc> nslookup xyz.local
+Server:  UnKnown
+Address:  192.168.100.20
+
+Name:    xyz.local
+Addresses:  192.168.100.21
+          192.168.100.20
+
+PS C:\Users\amandagonzalez_cbc> nltest /dsgetdc:xyz.local
+           DC: \\D-DC2.XYZ.LOCAL
+      Address: \\192.168.100.21
+     Dom Guid: 046a6de2-6dc5-4132-abab-3153c0d811ce
+     Dom Name: XYZ.LOCAL
+  Forest Name: XYZ.LOCAL
+ Dc Site Name: Default-First-Site-Name
+Our Site Name: Default-First-Site-Name
+        Flags: GC DS LDAP KDC TIMESERV WRITABLE DNS_DC DNS_DOMAIN DNS_FOREST CLOSE_SITE FULL_SECRET WS DS_8 DS_9 DS_10
+The command completed successfully
+PS C:\Users\amandagonzalez_cbc> nltest /sc_verify:xyz.local
+I_NetLogonControl failed: Status = 5 0x5 ERROR_ACCESS_DENIED
+PS C:\Users\amandagonzalez_cbc> systeminfo |findstr /B /C:"Domain"
+Domain:                    XYZ.LOCAL
+PS C:\Users\amandagonzalez_cbc> nltest /dsgetdc:cbc.local
+           DC: \\G-S-DC1.CBC.local
+      Address: \\192.168.100.30
+     Dom Guid: 8f122da0-55e4-44db-bed3-190782c648bc
+     Dom Name: CBC.local
+  Forest Name: CBC.local
+ Dc Site Name: Default-First-Site-Name
+Our Site Name: Default-First-Site-Name
+        Flags: PDC GC DS LDAP KDC TIMESERV WRITABLE DNS_DC DNS_DOMAIN DNS_FOREST CLOSE_SITE FULL_SECRET WS DS_8 DS_9
+The command completed successfully
+PS C:\Users\amandagonzalez_cbc> nltest /sc_verify:cbc.local
+I_NetLogonControl failed: Status = 5 0x5 ERROR_ACCESS_DENIED
+PS C:\Users\amandagonzalez_cbc> cd G:\
+cd : Access is denied
+At line:1 char:1
++ cd G:\
++ ~~~~~~
+    + CategoryInfo          : PermissionDenied: (G:\:String) [Set-Location], UnauthorizedAccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.SetLocationCommand
+
+cd : Cannot find path 'G:\' because it does not exist.
+At line:1 char:1
++ cd G:\
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (G:\:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\Users\amandagonzalez_cbc> cd G:\
+cd : Access is denied
+At line:1 char:1
++ cd G:\
++ ~~~~~~
+    + CategoryInfo          : PermissionDenied: (G:\:String) [Set-Location], UnauthorizedAccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.SetLocationCommand
+
+cd : Cannot find path 'G:\' because it does not exist.
+At line:1 char:1
++ cd G:\
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (G:\:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\Users\amandagonzalez_cbc>
