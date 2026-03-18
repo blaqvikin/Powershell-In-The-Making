@@ -502,3 +502,171 @@ At line:1 char:1
     + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
 
 PS C:\Users\amandagonzalez_cbc>
+
+Troubleshooting : DC1
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\Users\Administrator> Get-ADUser amandagonzalez_cbc -Properties SIDHistory
+
+
+DistinguishedName : CN=Amanda Gonzalez,OU=XYZ-Finance,OU=Company,DC=XYZ,DC=LOCAL
+Enabled           : True
+GivenName         : Amanda
+Name              : Amanda Gonzalez
+ObjectClass       : user
+ObjectGUID        : 60b0922e-d5d8-43e5-8fe5-1f3a6f9ef83f
+SamAccountName    : amandagonzalez_CBC
+SID               : S-1-5-21-775438850-3369346780-1388710907-1165
+SIDHistory        : {S-1-5-21-3147001572-2836814592-1821215285-1174}
+Surname           : Gonzalez
+UserPrincipalName : amandagonzalez_CBC@XYZ.LOCAL
+
+
+
+PS C:\Users\Administrator> Get-ADDomain
+
+
+AllowedDNSSuffixes                 : {}
+ChildDomains                       : {}
+ComputersContainer                 : CN=Computers,DC=XYZ,DC=LOCAL
+DeletedObjectsContainer            : CN=Deleted Objects,DC=XYZ,DC=LOCAL
+DistinguishedName                  : DC=XYZ,DC=LOCAL
+DNSRoot                            : XYZ.LOCAL
+DomainControllersContainer         : OU=Domain Controllers,DC=XYZ,DC=LOCAL
+DomainMode                         : Windows2016Domain
+DomainSID                          : S-1-5-21-775438850-3369346780-1388710907
+ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=XYZ,DC=LOCAL
+Forest                             : XYZ.LOCAL
+InfrastructureMaster               : D-DC1.XYZ.LOCAL
+LastLogonReplicationInterval       :
+LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=XYZ,DC=LOCAL}
+LostAndFoundContainer              : CN=LostAndFound,DC=XYZ,DC=LOCAL
+ManagedBy                          :
+Name                               : XYZ
+NetBIOSName                        : XYZ
+ObjectClass                        : domainDNS
+ObjectGUID                         : 046a6de2-6dc5-4132-abab-3153c0d811ce
+ParentDomain                       :
+PDCEmulator                        : D-DC1.XYZ.LOCAL
+PublicKeyRequiredPasswordRolling   : True
+QuotasContainer                    : CN=NTDS Quotas,DC=XYZ,DC=LOCAL
+ReadOnlyReplicaDirectoryServers    : {}
+ReplicaDirectoryServers            : {D-DC1.XYZ.LOCAL, D-DC2.XYZ.LOCAL}
+RIDMaster                          : D-DC1.XYZ.LOCAL
+SubordinateReferences              : {DC=ForestDnsZones,DC=XYZ,DC=LOCAL, DC=DomainDnsZones,DC=XYZ,DC=LOCAL,
+                                     CN=Configuration,DC=XYZ,DC=LOCAL}
+SystemsContainer                   : CN=System,DC=XYZ,DC=LOCAL
+UsersContainer                     : CN=Users,DC=XYZ,DC=LOCAL
+
+
+
+PS C:\Users\Administrator> repadmin /syncall /ADeP
+Syncing all NC's held on D-DC1.
+Syncing partition: DC=ForestDnsZones,DC=XYZ,DC=LOCAL
+CALLBACK MESSAGE: The following replication is in progress:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: The following replication completed successfully:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: SyncAll Finished.
+SyncAll terminated with no errors.
+
+Syncing partition: DC=DomainDnsZones,DC=XYZ,DC=LOCAL
+CALLBACK MESSAGE: The following replication is in progress:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: The following replication completed successfully:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: SyncAll Finished.
+SyncAll terminated with no errors.
+
+Syncing partition: CN=Schema,CN=Configuration,DC=XYZ,DC=LOCAL
+CALLBACK MESSAGE: The following replication is in progress:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: The following replication completed successfully:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: SyncAll Finished.
+SyncAll terminated with no errors.
+
+Syncing partition: CN=Configuration,DC=XYZ,DC=LOCAL
+CALLBACK MESSAGE: The following replication is in progress:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: The following replication completed successfully:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: SyncAll Finished.
+SyncAll terminated with no errors.
+
+Syncing partition: DC=XYZ,DC=LOCAL
+CALLBACK MESSAGE: The following replication is in progress:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: The following replication completed successfully:
+    From: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d._msdcs.XYZ.LOCAL
+    To  : 8a372f35-2d97-449e-bb8e-c3553faf8ff0._msdcs.XYZ.LOCAL
+CALLBACK MESSAGE: SyncAll Finished.
+SyncAll terminated with no errors.
+
+PS C:\Users\Administrator> repadmin /showrepl
+
+Repadmin: running command /showrepl against full DC localhost
+Default-First-Site-Name\D-DC1
+DSA Options: IS_GC
+Site Options: (none)
+DSA object GUID: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d
+DSA invocationID: 30899f6c-63bb-4fc2-b1cc-bae88ad2520d
+
+==== INBOUND NEIGHBORS ======================================
+
+DC=XYZ,DC=LOCAL
+    Default-First-Site-Name\D-DC2 via RPC
+        DSA object GUID: 8a372f35-2d97-449e-bb8e-c3553faf8ff0
+        Last attempt @ 2026-03-18 17:56:38 was successful.
+
+CN=Configuration,DC=XYZ,DC=LOCAL
+    Default-First-Site-Name\D-DC2 via RPC
+        DSA object GUID: 8a372f35-2d97-449e-bb8e-c3553faf8ff0
+        Last attempt @ 2026-03-18 17:56:38 was successful.
+
+CN=Schema,CN=Configuration,DC=XYZ,DC=LOCAL
+    Default-First-Site-Name\D-DC2 via RPC
+        DSA object GUID: 8a372f35-2d97-449e-bb8e-c3553faf8ff0
+        Last attempt @ 2026-03-18 17:56:38 was successful.
+
+DC=DomainDnsZones,DC=XYZ,DC=LOCAL
+    Default-First-Site-Name\D-DC2 via RPC
+        DSA object GUID: 8a372f35-2d97-449e-bb8e-c3553faf8ff0
+        Last attempt @ 2026-03-18 17:56:38 was successful.
+
+DC=ForestDnsZones,DC=XYZ,DC=LOCAL
+    Default-First-Site-Name\D-DC2 via RPC
+        DSA object GUID: 8a372f35-2d97-449e-bb8e-c3553faf8ff0
+        Last attempt @ 2026-03-18 17:56:38 was successful.
+
+PS C:\Users\Administrator> set l
+PS C:\Users\Administrator> echo %LOGONSERVER%
+%LOGONSERVER%
+PS C:\Users\Administrator> hostname
+D-DC1
+PS C:\Users\Administrator> nltest /domain_trusts
+List of domain trusts:
+    0: CBC CBC.local (NT 5) (Direct Outbound) (Direct Inbound) ( Attr: foresttrans )
+    1: XYZ XYZ.LOCAL (NT 5) (Forest Tree Root) (Primary Domain) (Native)
+The command completed successfully
+PS C:\Users\Administrator> netdom trust xyz.local /domain:cbc.local /quarantine:NO
+SID filtering is not enabled for this trust.
+
+The command completed successfully.
+
+PS C:\Users\Administrator> netdom trust cbc.local /domain:xyz.local /quarantine:NO
+SID filtering is not enabled for this trust.
+
+The command completed successfully.
+
+PS C:\Users\Administrator>
