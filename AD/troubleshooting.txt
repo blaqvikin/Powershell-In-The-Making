@@ -271,3 +271,96 @@ PS C:\Users\Administrator> echo %LOGONSERVER%
 PS C:\Users\Administrator> hostname
 D-DC1
 PS C:\Users\Administrator>
+
+Troubleshooting Continued: Workstation.
+Microsoft Windows [Version 10.0.19045.3803]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\amandagonzalez_cbc>echo %Logonserver%
+\\D-DC1
+
+C:\Users\amandagonzalez_cbc>whoami /all
+
+USER INFORMATION
+----------------
+
+User Name              SID
+====================== =============================================
+xyz\amandagonzalez_cbc S-1-5-21-775438850-3369346780-1388710907-1165
+
+
+GROUP INFORMATION
+-----------------
+
+Group Name                                 Type             SID                                            Attributes   
+========================================== ================ ============================================== ==================================================
+Everyone                                   Well-known group S-1-1-0                                        Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4                                        Mandatory group, Enabled by default, Enabled group
+CONSOLE LOGON                              Well-known group S-1-2-1                                        Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                       Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15                                       Mandatory group, Enabled by default, Enabled group
+LOCAL                                      Well-known group S-1-2-0                                        Mandatory group, Enabled by default, Enabled group
+XYZ\XYZ-SG-Finance-Team                    Group            S-1-5-21-775438850-3369346780-1388710907-1155  Mandatory group, Enabled by default, Enabled group
+XYZ\amandagonzalez_CBC                     User             S-1-5-21-3147001572-2836814592-1821215285-1174 Mandatory group, Enabled by default, Enabled group
+Authentication authority asserted identity Well-known group S-1-18-1                                       Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192                                                 
+
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                          State
+============================= ==================================== ========
+SeShutdownPrivilege           Shut down the system                 Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Disabled
+SeIncreaseWorkingSetPrivilege Increase a process working set       Disabled
+SeTimeZonePrivilege           Change the time zone                 Disabled
+
+
+USER CLAIMS INFORMATION
+-----------------------
+
+User claims unknown.
+
+Kerberos support for Dynamic Access Control on this device has been disabled.
+
+C:\Users\amandagonzalez_cbc>set l
+LOCALAPPDATA=C:\Users\amandagonzalez_cbc\AppData\Local
+LOGONSERVER=\\D-DC1
+
+C:\Users\amandagonzalez_cbc>cd g:\
+Access is denied.
+
+C:\Users\amandagonzalez_cbc>hostname
+D-Win-2
+
+C:\Users\amandagonzalez_cbc>ipconfig /all
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : D-Win-2
+   Primary Dns Suffix  . . . . . . . : XYZ.LOCAL
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : XYZ.LOCAL
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+   Physical Address. . . . . . . . . : 00-15-5D-00-04-0F
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::ba0f:6fa6:3dd:185e%6(Preferred)
+   IPv4 Address. . . . . . . . . . . : 192.168.100.27(Preferred)
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.100.1
+   DHCPv6 IAID . . . . . . . . . . . : 100668765
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-31-49-5D-8C-00-15-5D-00-04-0F
+   DNS Servers . . . . . . . . . . . : 192.168.100.20
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+C:\Users\amandagonzalez_cbc>
