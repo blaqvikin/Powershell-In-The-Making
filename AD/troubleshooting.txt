@@ -1138,3 +1138,222 @@ FinanceShare            *                       CBC\CBC-SG-Finance-Team Allow   
 
 
 PS C:\Users\administrator.CBC>
+
+On Desktop:
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\jeanmichaels_cbc> whoami /all
+
+USER INFORMATION
+----------------
+
+User Name            SID
+==================== =============================================
+xyz\jeanmichaels_cbc S-1-5-21-775438850-3369346780-1388710907-1169
+
+
+GROUP INFORMATION
+-----------------
+
+Group Name                                 Type             SID                                            Attributes   
+========================================== ================ ============================================== ==================================================
+Everyone                                   Well-known group S-1-1-0                                        Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4                                        Mandatory group, Enabled by default, Enabled group
+CONSOLE LOGON                              Well-known group S-1-2-1                                        Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                       Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15                                       Mandatory group, Enabled by default, Enabled group
+LOCAL                                      Well-known group S-1-2-0                                        Mandatory group, Enabled by default, Enabled group
+XYZ\jeanmichaels_cbc                       User             S-1-5-21-3147001572-2836814592-1821215285-1189 Mandatory group, Enabled by default, Enabled group
+Authentication authority asserted identity Well-known group S-1-18-1                                       Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192                                                 
+
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                          State
+============================= ==================================== ========
+SeShutdownPrivilege           Shut down the system                 Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Disabled
+SeIncreaseWorkingSetPrivilege Increase a process working set       Disabled
+SeTimeZonePrivilege           Change the time zone                 Disabled
+
+
+USER CLAIMS INFORMATION
+-----------------------
+
+User claims unknown.
+
+Kerberos support for Dynamic Access Control on this device has been disabled.
+PS C:\Users\jeanmichaels_cbc> klist
+
+Current LogonId is 0:0x2c502a
+
+Cached Tickets: (6)
+
+#0>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/CBC.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: RSADSI RC4-HMAC(NT)
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 9:18:41 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: RSADSI RC4-HMAC(NT)
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#1>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 3/19/2026 9:18:02 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: D-DC1
+
+#2>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: HTTP/s-fs1.cbc.local @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 9:18:41 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: G-S-DC1.CBC.local
+
+#3>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: cifs/s-fs1.cbc.local @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 9:18:38 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: G-S-DC1.CBC.local
+
+#4>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: ldap/D-DC1.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 9:18:03 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#5>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: LDAP/D-DC2.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 9:18:02 (local)
+        End Time:   3/19/2026 19:18:02 (local)
+        Renew Time: 3/26/2026 9:18:02 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+PS C:\Users\jeanmichaels_cbc> dir \\s-fs1.cbc.local\financeshare
+dir : Access is denied
+At line:1 char:1
++ dir \\s-fs1.cbc.local\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (\\s-fs1.cbc.local\financeshare:String) [Get-ChildItem], UnauthorizedA
+   ccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+dir : Cannot find path '\\s-fs1.cbc.local\financeshare' because it does not exist.
+At line:1 char:1
++ dir \\s-fs1.cbc.local\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (\\s-fs1.cbc.local\financeshare:String) [Get-ChildItem], ItemNotFoundExc
+   eption
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+PS C:\Users\jeanmichaels_cbc> net use \\s-fs1.cbc.local\financeshare\
+System error 53 has occurred.
+
+The network path was not found.
+
+PS C:\Users\jeanmichaels_cbc> net use \\s-fs1\financeshare\
+System error 53 has occurred.
+
+The network path was not found.
+
+PS C:\Users\jeanmichaels_cbc> ping s-fs1.cbc.local
+
+Pinging s-fs1.cbc.local [192.168.100.34] with 32 bytes of data:
+Reply from 192.168.100.34: bytes=32 time<1ms TTL=128
+Reply from 192.168.100.34: bytes=32 time<1ms TTL=128
+Reply from 192.168.100.34: bytes=32 time<1ms TTL=128
+Reply from 192.168.100.34: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.100.34:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+PS C:\Users\jeanmichaels_cbc> ping cbc.local
+
+Pinging cbc.local [192.168.100.30] with 32 bytes of data:
+Reply from 192.168.100.30: bytes=32 time=1ms TTL=128
+Reply from 192.168.100.30: bytes=32 time<1ms TTL=128
+Reply from 192.168.100.30: bytes=32 time<1ms TTL=128
+Reply from 192.168.100.30: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.100.30:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+PS C:\Users\jeanmichaels_cbc> dir \\s-fs1\financeshare
+dir : Access is denied
+At line:1 char:1
++ dir \\s-fs1\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (\\s-fs1\financeshare:String) [Get-ChildItem], UnauthorizedAccessExcep
+   tion
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+dir : Cannot find path '\\s-fs1\financeshare' because it does not exist.
+At line:1 char:1
++ dir \\s-fs1\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (\\s-fs1\financeshare:String) [Get-ChildItem], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+PS C:\Users\jeanmichaels_cbc> net use \\s-fs1\financeshare
+Local name
+Remote name       \\s-fs1\FinanceShare
+Resource type     Disk
+Status            OK
+# Opens           0
+# Connections     1
+The command completed successfully.
+
+PS C:\Users\jeanmichaels_cbc> net use K: \\s-fs1\financeshare
+The command completed successfully.
+
+PS C:\Users\jeanmichaels_cbc> cd K:\
+cd : Access is denied
+At line:1 char:1
++ cd K:\
++ ~~~~~~
+    + CategoryInfo          : PermissionDenied: (K:\:String) [Set-Location], UnauthorizedAccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.SetLocationCommand
+
+cd : Cannot find path 'K:\' because it does not exist.
+At line:1 char:1
++ cd K:\
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (K:\:String) [Set-Location], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.SetLocationCommand
+
+PS C:\Users\jeanmichaels_cbc>
