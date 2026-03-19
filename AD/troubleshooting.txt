@@ -711,3 +711,68 @@ Migrate service accounts: Yes
 2026-03-18 19:44:01   CN=Jean Michaels     - Password Copied.
 2026-03-18 19:44:02 Operation completed.
 
+WhoAmI /ALL Jean Michaels
+
+PS C:\Users\jeanmichaels_cbc> whoami /all
+
+USER INFORMATION
+----------------
+
+User Name            SID
+==================== =============================================
+xyz\jeanmichaels_cbc S-1-5-21-775438850-3369346780-1388710907-1169
+
+
+GROUP INFORMATION
+-----------------
+
+Group Name                                 Type             SID                                            Attributes
+========================================== ================ ============================================== ==================================================
+Everyone                                   Well-known group S-1-1-0                                        Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4                                        Mandatory group, Enabled by default, Enabled group
+CONSOLE LOGON                              Well-known group S-1-2-1                                        Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11                                       Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15                                       Mandatory group, Enabled by default, Enabled group
+LOCAL                                      Well-known group S-1-2-0                                        Mandatory group, Enabled by default, Enabled group
+XYZ\jeanmichaels_cbc                       User             S-1-5-21-3147001572-2836814592-1821215285-1189 Mandatory group, Enabled by default, Enabled group
+Authentication authority asserted identity Well-known group S-1-18-1                                       Mandatory group, Enabled by default, Enabled group
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192
+
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                          State
+============================= ==================================== ========
+SeShutdownPrivilege           Shut down the system                 Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking             Enabled
+SeUndockPrivilege             Remove computer from docking station Disabled
+SeIncreaseWorkingSetPrivilege Increase a process working set       Disabled
+SeTimeZonePrivilege           Change the time zone                 Disabled
+
+
+USER CLAIMS INFORMATION
+-----------------------
+
+User claims unknown.
+
+Kerberos support for Dynamic Access Control on this device has been disabled.
+PS C:\Users\jeanmichaels_cbc> nslookup s-fs1@cbc.local
+Server:  UnKnown
+Address:  192.168.100.20
+
+*** UnKnown can't find s-fs1@cbc.local: Non-existent domain
+PS C:\Users\jeanmichaels_cbc> ping s-fs1
+
+Pinging S-FS1 [fe80::4922:37aa:57a:7168%6] with 32 bytes of data:
+Reply from fe80::4922:37aa:57a:7168%6: time=2ms
+Reply from fe80::4922:37aa:57a:7168%6: time<1ms
+Reply from fe80::4922:37aa:57a:7168%6: time<1ms
+Reply from fe80::4922:37aa:57a:7168%6: time=2ms
+
+Ping statistics for fe80::4922:37aa:57a:7168%6:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 2ms, Average = 1ms
+
