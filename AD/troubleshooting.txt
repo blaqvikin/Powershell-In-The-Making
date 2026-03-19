@@ -1079,3 +1079,23 @@ Registered ServicePrincipalNames for CN=S-FS1,CN=Computers,DC=CBC,DC=local:
         HOST/S-FS1
         RestrictedKrbHost/S-FS1.CBC.local
         HOST/S-FS1.CBC.local
+
+On S-FS1:
+        HOST/S-FS1.CBC.local
+PS C:\Users\administrator.CBC> icacls \\s-fs1.cbc.local\financeshare
+\\s-fs1.cbc.local\financeshare: Access is denied.
+Successfully processed 0 files; Failed processing 1 files
+PS C:\Users\administrator.CBC> whoami
+cbc\administrator
+PS C:\Users\administrator.CBC> hostname
+S-FS1
+PS C:\Users\administrator.CBC> icacls C:\FinanceShare
+C:\FinanceShare NT AUTHORITY\SYSTEM:(I)(OI)(CI)(F)
+                BUILTIN\Administrators:(I)(OI)(CI)(F)
+                BUILTIN\Users:(I)(OI)(CI)(RX)
+                BUILTIN\Users:(I)(CI)(AD)
+                BUILTIN\Users:(I)(CI)(WD)
+                CREATOR OWNER:(I)(OI)(CI)(IO)(F)
+
+Successfully processed 1 files; Failed processing 0 files
+PS C:\Users\administrator.CBC>
