@@ -1099,3 +1099,42 @@ C:\FinanceShare NT AUTHORITY\SYSTEM:(I)(OI)(CI)(F)
 
 Successfully processed 1 files; Failed processing 0 files
 PS C:\Users\administrator.CBC>
+
+S-FS1:
+
+PS C:\Users\administrator.CBC> Get-SmbShare -name FinanceShare | Get-SmbShareAccess
+
+Name                    ScopeName               AccountName             AccessControlType       AccessRight
+----                    ---------               -----------             -----------------       -----------
+FinanceShare            *                       CBC\CBC-SG-Finance-Team Allow                   Change
+
+
+PS C:\Users\administrator.CBC> Revoke-SmbShareAccess -name FinanceShare -AccountName Everyone -Force
+
+Name                    ScopeName               AccountName             AccessControlType       AccessRight
+----                    ---------               -----------             -----------------       -----------
+FinanceShare            *                       CBC\CBC-SG-Finance-Team Allow                   Change
+
+
+PS C:\Users\administrator.CBC> Grant-SmbShareAccess -Name FinanceShare -AccountName "CBC\CBC-SG-Finance-Team" -Acces
+ht Full -Force
+
+Name                    ScopeName               AccountName             AccessControlType       AccessRight
+----                    ---------               -----------             -----------------       -----------
+FinanceShare            *                       CBC\CBC-SG-Finance-Team Allow                   Full
+
+
+PS C:\Users\administrator.CBC> icacls C:\FinanceShare /grant "CBC\CBC-SG-Finance-Team:(OI)(CI)M"
+processed file: C:\FinanceShare
+Successfully processed 1 files; Failed processing 0 files
+PS C:\Users\administrator.CBC> icacls C:\FinanceShare /remove "BUILTIN\Users"
+processed file: C:\FinanceShare
+Successfully processed 1 files; Failed processing 0 files
+PS C:\Users\administrator.CBC> Get-SmbShare -name FinanceShare | Get-SmbShareAccess
+
+Name                    ScopeName               AccountName             AccessControlType       AccessRight
+----                    ---------               -----------             -----------------       -----------
+FinanceShare            *                       CBC\CBC-SG-Finance-Team Allow                   Full
+
+
+PS C:\Users\administrator.CBC>
