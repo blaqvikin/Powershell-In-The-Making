@@ -670,3 +670,44 @@ SID filtering is not enabled for this trust.
 The command completed successfully.
 
 PS C:\Users\Administrator>
+
+New Migrated User: JeanMichaels_cbc with password expiration enabled and working.
+
+[Settings Section]
+Task: User Migration (2)
+ADMT Console
+    User:       XYZ\administrator
+    Computer:   D-ADMT-II.XYZ.LOCAL (D-ADMT-II)
+        Domain:     XYZ.LOCAL (XYZ)
+        OS:         Windows Server 2012 R2 Datacenter Evaluation 6.3 (9600) 
+Source Domain
+    Name:   CBC.local (CBC)
+    DC:     G-S-DC1.CBC.local (G-S-DC1)
+        OS:     Windows Server 2012 R2 Datacenter Evaluation 6.3 (9600) 
+    OU:     
+Target Domain
+    Name:   XYZ.LOCAL (XYZ)
+    DC:     D-DC1.XYZ.LOCAL (D-DC1)
+        OS:     Windows Server 2019 Datacenter Evaluation 10.0 (17763) 
+    OU:     LDAP://XYZ.LOCAL/OU=XYZ-Finance,OU=Company,DC=XYZ,DC=LOCAL
+Intra-Forest: No
+Password Option:        Copy passwords, only for new objects = No
+Password Export Server: G-S-DC1.CBC.local
+Migrate Security Identifiers: Yes
+Update Rights: No
+Translate Roaming Profiles: No
+Fix group membership: Yes
+Conflict Option: Ignore
+Source Disable Option: Leave source account
+Source Expiration: Do not expire source account
+Target Disable Option: Enable target account
+Migrate groups: No
+Migrate service accounts: Yes
+
+[Object Migration Section]
+2026-03-18 19:43:34 Starting Account Replicator.
+2026-03-18 19:43:38 CN=Jean Michaels     - Created
+2026-03-18 19:43:38 SID for CBC\jeanmichaels_cbc added to the SID History of XYZ\jeanmichaels_cbc
+2026-03-18 19:44:01   CN=Jean Michaels     - Password Copied.
+2026-03-18 19:44:02 Operation completed.
+
