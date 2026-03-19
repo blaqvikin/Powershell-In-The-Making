@@ -833,3 +833,236 @@ ReferenceId: 0x564D5450 (source IP:  86.77.84.80)
 Last Successful Sync Time: 19.03.2026 08:42:52
 Source: VM IC Time Synchronization Provider
 Poll Interval: 6 (64s)
+
+Desktop joined to xyz
+
+PS C:\Users\jeanmichaels_cbc> klist
+
+Current LogonId is 0:0x63b86
+
+Cached Tickets: (3)
+
+#0>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:30:19 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: D-DC1
+
+#1>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: LDAP/D-DC2.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 8:32:58 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#2>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: LDAP/D-DC1.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 8:30:19 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+PS C:\Users\jeanmichaels_cbc> dir \\s-fs1.cbc.local\financeshare
+dir : Access is denied
+At line:1 char:1
++ dir \\s-fs1.cbc.local\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (\\s-fs1.cbc.local\financeshare:String) [Get-ChildItem], UnauthorizedA
+   ccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+dir : Cannot find path '\\s-fs1.cbc.local\financeshare' because it does not exist.
+At line:1 char:1
++ dir \\s-fs1.cbc.local\financeshare
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (\\s-fs1.cbc.local\financeshare:String) [Get-ChildItem], ItemNotFoundExc
+   eption
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+
+PS C:\Users\jeanmichaels_cbc> klist
+
+Current LogonId is 0:0x63b86
+
+Cached Tickets: (5)
+
+#0>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/CBC.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: RSADSI RC4-HMAC(NT)
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:37:16 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: RSADSI RC4-HMAC(NT)
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#1>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:30:19 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: D-DC1
+
+#2>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: cifs/s-fs1.cbc.local @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:37:16 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: G-S-DC1.CBC.local
+
+#3>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: LDAP/D-DC2.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 8:32:58 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#4>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: LDAP/D-DC1.XYZ.LOCAL/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 3/19/2026 8:30:19 (local)
+        End Time:   3/19/2026 18:30:19 (local)
+        Renew Time: 3/26/2026 8:30:19 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: D-DC1.XYZ.LOCAL
+PS C:\Users\jeanmichaels_cbc> nslookup s-fs1.cbc.local
+Server:  UnKnown
+Address:  192.168.100.20
+
+Non-authoritative answer:
+Name:    s-fs1.cbc.local
+Address:  192.168.100.34
+
+PS C:\Users\jeanmichaels_cbc> klist purge
+
+Current LogonId is 0:0x63b86
+        Deleting all tickets:
+        Ticket(s) purged!
+PS C:\Users\jeanmichaels_cbc> runas /netonly /user:cbc\jeanmichaels_cbc cmd
+Enter the password for cbc\jeanmichaels_cbc:
+Attempting to start cmd as user "cbc\jeanmichaels_cbc" ...
+PS C:\Users\jeanmichaels_cbc>
+
+PS C:\Users\jeanmichaels_cbc> w32tm /query /status
+Leap Indicator: 0(no warning)
+Stratum: 5 (secondary reference - syncd by (S)NTP)
+Precision: -23 (119.209ns per tick)
+Root Delay: 0.0002318s
+Root Dispersion: 0.0100002s
+ReferenceId: 0x564D5450 (source IP:  86.77.84.80)
+Last Successful Sync Time: 3/19/2026 8:48:52 AM
+Source: VM IC Time Synchronization Provider
+Poll Interval: 10 (1024s)
+
+PS C:\Users\jeanmichaels_cbc>
+
+CMD Session after runas:
+
+C:\WINDOWS\system32>klist
+
+Current LogonId is 0:0x136752
+
+Cached Tickets: (2)
+
+#0>     Client: jeanmichaels_cbc @ CBC.LOCAL
+        Server: krbtgt/CBC.LOCAL @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:39:43 (local)
+        End Time:   3/19/2026 18:39:43 (local)
+        Renew Time: 3/26/2026 8:39:43 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: G-S-DC1
+
+#1>     Client: jeanmichaels_cbc @ CBC.LOCAL
+        Server: cifs/s-fs1.cbc.local @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:39:43 (local)
+        End Time:   3/19/2026 18:39:43 (local)
+        Renew Time: 3/26/2026 8:39:43 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: G-S-DC1.CBC.local
+
+C:\WINDOWS\system32>
+
+C:\WINDOWS\system32>net use \\s-fs1.cbc.local\financeshare
+The command completed successfully.
+
+
+C:\WINDOWS\system32>cd \\f-fs1.cbc.local\financeshare
+'\\f-fs1.cbc.local\financeshare'
+CMD does not support UNC paths as current directories.
+
+
+Still on Desktop workstation on powersehll console.
+
+PS C:\Users\jeanmichaels_cbc> net use \\s-fs1.cbc.local\financeshare
+The command completed successfully.
+
+PS C:\Users\jeanmichaels_cbc> klist
+
+Current LogonId is 0:0x63b86
+
+Cached Tickets: (3)
+
+#0>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/CBC.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: RSADSI RC4-HMAC(NT)
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:51:10 (local)
+        End Time:   3/19/2026 18:51:10 (local)
+        Renew Time: 3/26/2026 8:51:10 (local)
+        Session Key Type: RSADSI RC4-HMAC(NT)
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#1>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: krbtgt/XYZ.LOCAL @ XYZ.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:51:10 (local)
+        End Time:   3/19/2026 18:51:10 (local)
+        Renew Time: 3/26/2026 8:51:10 (local)
+        Session Key Type: RSADSI RC4-HMAC(NT)
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: D-DC1.XYZ.LOCAL
+
+#2>     Client: jeanmichaels_cbc @ XYZ.LOCAL
+        Server: cifs/s-fs1.cbc.local @ CBC.LOCAL
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 3/19/2026 8:51:10 (local)
+        End Time:   3/19/2026 18:51:10 (local)
+        Renew Time: 3/26/2026 8:51:10 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x200 -> DISABLE-TGT-DELEGATION
+        Kdc Called: G-S-DC1.CBC.local
