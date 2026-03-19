@@ -775,4 +775,30 @@ Ping statistics for fe80::4922:37aa:57a:7168%6:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum = 2ms, Average = 1ms
+DC1 on XYZ:
+PS C:\Users\Administrator> nltest /domain_trusts
+List of domain trusts:
+    0: CBC CBC.local (NT 5) (Direct Outbound) (Direct Inbound) ( Attr: foresttrans )
+    1: XYZ XYZ.LOCAL (NT 5) (Forest Tree Root) (Primary Domain) (Native)
+The command completed successfully
+PS C:\Users\Administrator> nltest /sc_verify:cbc.local
+Flags: b0 HAS_IP  HAS_TIMESERV
+Trusted DC Name \\G-S-DC1.CBC.local
+Trusted DC Connection Status Status = 0 0x0 NERR_Success
+Trust Verification Status = 0 0x0 NERR_Success
+The command completed successfully
+PS C:\Users\Administrator> nltest /sc_verify:xyz.local
+I_NetLogonControl failed: Status = 1355 0x54b ERROR_NO_SUCH_DOMAIN
+PS C:\Users\Administrator> hostname
+D-DC1
+PS C:\Users\Administrator> w32tm /query /status
+Leap Indicator: 0(no warning)
+Stratum: 5 (secondary reference - syncd by (S)NTP)
+Precision: -23 (119.209ns per tick)
+Root Delay: 0.0002539s
+Root Dispersion: 0.0100002s
+ReferenceId: 0x564D5450 (source IP:  86.77.84.80)
+Last Successful Sync Time: 3/19/2026 8:43:15 AM
+Source: VM IC Time Synchronization Provider
+Poll Interval: 6 (64s)
 
