@@ -1,4 +1,7 @@
 # Requires -RunAsAdministrator
+#Required users
+# English, Chinese-Simplified, Spanish, Vietnamese, Russian, Japanesse,
+# Preferred username should be name of language, the admin account is English
 
 # --- 1. ADMIN & OS VERSION DETECTION ---
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
