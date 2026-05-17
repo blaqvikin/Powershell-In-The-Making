@@ -24,7 +24,7 @@ else {
     exit
 }
 
-# --- 3. PRODUCTION USER & LANGUAGE MAP (CLEANED) ---
+# --- 3. PRODUCTION USER & LANGUAGE MAP (CLEAN PROFILES) ---
 $UserMap = @{
     "English"    = "en-US"
     "Spanish"    = "es-ES"
@@ -79,12 +79,15 @@ foreach ($Lang in $UserMap.Values) {
     }
 }
 
-# --- 5. CREATE CLEAN KIOSK ACCOUNTS ---
+# --- 5. CREATE PRODUCTION ACCOUNTS (TRUE BLANK PASSWORD) ---
 foreach ($Username in $UserMap.Keys) {
     if (-not (Get-LocalUser -Name $Username -ErrorAction SilentlyContinue)) {
-        Write-Host "Creating production account: $Username"
-        $Password = ConvertTo-SecureString " " -AsPlainText -Force 
-        New-LocalUser -Name $Username -Password $Password -Description "Kiosk Account for $($UserMap[$Username])"
+        Write-Host "Creating passwordless account: $Username"
+        
+        # Instantiating a clean SecureString object creates an authentic, 100% blank system password
+        $Password = New-Object System.Security.SecureString 
+        
+        $user = New-LocalUser -Name $Username -Password $Password -Description "Kiosk Account for $($UserMap[$Username])"
         Add-LocalGroupMember -Group "Users" -Member $Username
         Set-LocalUser -Name $Username -PasswordNeverExpires $true
     }
@@ -144,4 +147,4 @@ $LogonScript | Out-File -FilePath "C:\ProgramData\SetUserLanguage.ps1" -Force -E
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "LanguageSetup" -Value "powershell.exe -ExecutionPolicy Bypass -File C:\ProgramData\SetUserLanguage.ps1"
 
 Write-Host "--- Production Configuration Completed ---" -ForegroundColor Black -BackgroundColor Green
-Write-Host "Please execute a complete system RESTART to load new accounts."
+Write-Host "Please execute a complete system RESTART to load changes."
